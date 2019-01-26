@@ -4,27 +4,27 @@ import android.content.Context
 import com.facebook.stetho.Stetho
 import timber.log.Timber
 
-interface AppInitializer {
+interface ToolsInitializer {
     fun init(androidContext: Context)
 
     companion object {
         fun init(androidContext: Context,
                  isDebug: Boolean) {
-            val appInitializer: AppInitializer =
+            val toolsInitializer: ToolsInitializer =
                     if (isDebug) DebugInitializer() else ReleaseInitializer()
-            appInitializer.init(androidContext)
+            toolsInitializer.init(androidContext)
         }
     }
 }
 
-class DebugInitializer: AppInitializer {
+class DebugInitializer: ToolsInitializer {
     override fun init(androidContext: Context) {
         Timber.plant(Timber.DebugTree())
         Stetho.initializeWithDefaults(androidContext)
     }
 }
 
-class ReleaseInitializer: AppInitializer {
+class ReleaseInitializer: ToolsInitializer {
     override fun init(androidContext: Context) {
         Timber.plant(TimberReleaseTree())
     }

@@ -58,6 +58,8 @@ dependencies {
     implementation libs.retrofit
     implementation libs.gsonConverter
 
+    implementation libs.workManager
+
     implementation libs.timber
     implementation libs.stetho
 }
