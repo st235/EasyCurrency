@@ -1,6 +1,7 @@
 package github.com.st235.easycurrency.utils
 
 import androidx.annotation.AnyThread
+import androidx.annotation.MainThread
 
 typealias Observer<T> = (response: T) -> Unit
 
@@ -18,7 +19,7 @@ abstract class ObservableModel<T> {
         observersList.remove(observer)
     }
 
-    @AnyThread
+    @MainThread
     protected fun notifyObservers(result: T) {
         for (observer in observersList) {
             observer(result)

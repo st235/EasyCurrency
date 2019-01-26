@@ -1,32 +1,36 @@
 package github.com.st235.easycurrency.data
 
 import androidx.annotation.MainThread
-import androidx.annotation.WorkerThread
-import github.com.st235.easycurrency.data.db.CurrencyRateDatabase
-import github.com.st235.easycurrency.data.db.CurrencyRateEntity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import github.com.st235.easycurrency.data.inmemory.CurrencyRateInMemoryModel
 import github.com.st235.easycurrency.data.net.CurrencyRateApiWrapper
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
 import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
 import github.com.st235.easycurrency.utils.ObservableModel
 import github.com.st235.easycurrency.utils.UpdateTimer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 const val BASE_TO_BASE_CONVERT_RATIO = 1.0
 
-class CurrencyRatesFacade(private val currencyRateDatabase: CurrencyRateDatabase,
-                          private val currencyRateApiWrapper: CurrencyRateApiWrapper,
-                          private val currencyRatePrefs: CurrencyRatePrefs,
-                          updateTimer: UpdateTimer): ObservableModel<CurrencyRateResponse>() {
+class CurrencyRatesRepository(private val inMemoryModel: CurrencyRateInMemoryModel,
+                              private val apiWrapper: CurrencyRateApiWrapper,
+                              private val prefs: CurrencyRatePrefs,
+                              private val updateTimer: UpdateTimer):
+    ObservableModel<CurrencyRateResponse>(), LifecycleObserver {
     companion object {
-        val TAG = "[CurrencyRatesFacade]"
+        private const val TAG = "[RatesRepository]"
     }
 
-    init {
-        updateTimer.updateCallback = {
-            update()
-        }
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun startUpdating() {
+        Timber.tag(TAG).v("Start updating")
+        updateTimer.updateCallback = this::update
     }
 
     @MainThread
@@ -34,45 +38,21 @@ class CurrencyRatesFacade(private val currencyRateDatabase: CurrencyRateDatabase
         Timber.tag(TAG).v("Update task called")
 
         GlobalScope.launch {
-            val rates = currencyRateApiWrapper.getRates(currencyRatePrefs.baseCurrency).await()
-            updateDatabase(rates)
-            updatePrefs(rates)
-            notifyObservers(rates)
+            val rates = apiWrapper.getRates(prefs.baseCurrency).await()
+            inMemoryModel.update(rates)
+            withContext(context = Dispatchers.Main) { notifyObservers(rates) }
         }
     }
 
-    @WorkerThread
-    fun updateDatabase(ratesResponse: CurrencyRateResponse) {
-        Timber.tag(TAG).d("Perform to update database")
+    fun changeBaseCurrency(baseCurrency: String) {
+        Timber.tag(TAG).v("Change base currency to $baseCurrency")
 
-        val dbRatesEntities = mutableListOf<CurrencyRateEntity>()
-        dbRatesEntities.add(
-            CurrencyRateEntity(
-                currency = ratesResponse.base,
-                rate = BASE_TO_BASE_CONVERT_RATIO
-            )
-        )
-        for (currencyRatePair in ratesResponse.rates) {
-            dbRatesEntities.add(
-                CurrencyRateEntity(
-                    currency = currencyRatePair.key,
-                    rate = currencyRatePair.value
-                )
-            )
-        }
-        currencyRateDatabase.ratesDataDao().insertAll(dbRatesEntities)
     }
 
-    @WorkerThread
-    private fun updatePrefs(ratesResponse: CurrencyRateResponse) {
-        Timber.tag(TAG).d("Perform to update prefs")
-
-        currencyRatePrefs.baseCurrency = ratesResponse.base
-        currencyRatePrefs.updateDate = 0L
-    }
-
-    @WorkerThread
-    private fun getStoredValue() {
-//        val dbEntity =
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun stopUpdating() {
+        Timber.tag(TAG).v("Stop updating")
+        updateTimer.removeCallback()
+        inMemoryModel.flush()
     }
 }

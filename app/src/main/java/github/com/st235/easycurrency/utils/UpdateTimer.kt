@@ -21,4 +21,8 @@ class UpdateTimer {
     init {
         timer.schedule(timerTask, 0, TimeUnit.SECONDS.toMillis(TIME_VALUE_IN_SECONDS))
     }
+
+    fun removeCallback() {
+        updateCallback = null
+    }
 }

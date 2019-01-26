@@ -23,7 +23,7 @@ class CurrencyRatePrefs(context: Context) {
     get() = sharedPrefs.getLong(UPDATE_DATA_VALUE, 0L)
     set(value) {
         with(sharedPrefs.edit()) {
-            putLong(BASE_CURRENCY_VALUE, value)
+            putLong(UPDATE_DATA_VALUE, value)
             apply()
         }
     }

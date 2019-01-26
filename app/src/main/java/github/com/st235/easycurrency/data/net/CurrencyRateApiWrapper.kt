@@ -14,12 +14,13 @@ class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
 
     private var currentCall: Call<CurrencyRateResponse>? = null
 
+    fun isInUsage() = currentCall != null && currentCall!!.isExecuted
+
     fun getRates(baseCurrency: String): Deferred<CurrencyRateResponse> {
         val ratesDeferredRequest = CompletableDeferred<CurrencyRateResponse>()
 
-        if (currentCall != null && currentCall!!.isExecuted) {
-            Timber.tag(TAG).v("There is executed task, cancel current")
-            return ratesDeferredRequest
+        if (isInUsage()) {
+            Timber.tag(TAG).w("Someone calls getRates while request is executed")
         }
 
         currentCall = currencyRateApi.getCurrenciesConvertRate(baseCurrency)

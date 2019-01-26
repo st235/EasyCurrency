@@ -57,6 +57,9 @@ dependencies {
     implementation libs.room
     kapt compilers.room
 
+    implementation libs.lifecycle
+    kapt compilers.lifecycle
+
     implementation libs.retrofit
     implementation libs.gsonConverter
 
