@@ -26,7 +26,8 @@ class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
         currentCall?.enqueue(object : Callback<CurrencyRateResponse> {
             override fun onResponse(call: Call<CurrencyRateResponse>, response: Response<CurrencyRateResponse>) {
                 val convertRates = response.body()
-                Timber.d("Fetching url (${call.request().url()}) completed with ${response.code()} response code and $convertRates body")
+                Timber.tag(TAG).d("Fetching url (${call.request().url()}) completed with" +
+                        " ${response.code()} response code and $convertRates body")
 
                 if (convertRates == null) {
                     ratesDeferredRequest.completeExceptionally(IllegalStateException("There is no result"))
@@ -37,7 +38,7 @@ class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
             }
 
             override fun onFailure(call: Call<CurrencyRateResponse>, t: Throwable) {
-                Timber.e(t, "There was an exception while fetching ${call.request().url()}")
+                Timber.tag(TAG).e(t, "There was an exception while fetching ${call.request().url()}")
                 ratesDeferredRequest.completeExceptionally(t)
             }
         })
