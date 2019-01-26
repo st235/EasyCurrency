@@ -1,8 +1,7 @@
 package github.com.st235.easycurrency
 
 import android.app.Application
-import github.com.st235.easycurrency.data.background.BackgroundFactory
-import github.com.st235.easycurrency.data.background.BackgroundUpdateWorker
+import github.com.st235.easycurrency.background.BackgroundFactory
 import github.com.st235.easycurrency.di.appModules
 import github.com.st235.easycurrency.utils.ToolsInitializer
 import org.koin.android.ext.android.startKoin

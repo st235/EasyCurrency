@@ -1,22 +1,22 @@
-package github.com.st235.easycurrency.data.background
+package github.com.st235.easycurrency.background
 
 import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import github.com.st235.easycurrency.data.GetRatesTask
-import github.com.st235.easycurrency.data.db.RatesDatabaseFacade
+import github.com.st235.easycurrency.data.net.CurrencyRateApiWrapper
+import github.com.st235.easycurrency.data.CurrencyRatesFacade
 import kotlinx.coroutines.runBlocking
-import timber.log.Timber
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import timber.log.Timber
 
 class BackgroundUpdateWorker(context: Context,
                              params: WorkerParameters):
     Worker(context, params), KoinComponent {
 
-    private val getRatesTask: GetRatesTask by inject()
-    private val ratesDatabaseFacade: RatesDatabaseFacade by inject()
+    private val currencyRateApiWrapper: CurrencyRateApiWrapper by inject()
+    private val currencyRatesDatabaseFacade: CurrencyRatesFacade by inject()
 
     @WorkerThread
     override fun doWork(): Result {
@@ -25,12 +25,12 @@ class BackgroundUpdateWorker(context: Context,
 
         runBlocking {
             try {
-                val rates = getRatesTask.get("EUR").await()
-                ratesDatabaseFacade.updateDatabase(rates)
+                val rates = currencyRateApiWrapper.getRates("EUR").await()
+                currencyRatesDatabaseFacade.updateDatabase(rates)
                 result = Result.success()
                 Timber.d("background task: update finished")
-            } catch (e: Throwable) {
-                Timber.e("background task: failed with an exception")
+            } catch (exception: Throwable) {
+                Timber.w(exception, "background task: failed with an exception")
             }
         }
 

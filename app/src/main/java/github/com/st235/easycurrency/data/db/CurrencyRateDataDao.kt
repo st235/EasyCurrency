@@ -7,12 +7,12 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface RatesDataDao {
+interface CurrencyRateDataDao {
     @WorkerThread
     @Query("SELECT * FROM rates")
-    fun getAll(): List<RatesEntity>
+    fun getAll(): List<CurrencyRateEntity>
 
     @WorkerThread
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(rates: List<RatesEntity>)
+    fun insertAll(rates: List<CurrencyRateEntity>)
 }

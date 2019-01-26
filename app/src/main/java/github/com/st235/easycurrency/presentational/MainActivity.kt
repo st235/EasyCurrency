@@ -3,31 +3,30 @@ package github.com.st235.easycurrency.presentational
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import github.com.st235.easycurrency.R
-import github.com.st235.easycurrency.data.GetRatesTask
-import github.com.st235.easycurrency.data.db.RatesDatabase
-import github.com.st235.easycurrency.data.db.RatesEntity
+import github.com.st235.easycurrency.data.net.CurrencyRateApiWrapper
+import github.com.st235.easycurrency.data.db.CurrencyRateDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
-    private val currencyRepository: GetRatesTask by inject()
-    private val ratesDatabase: RatesDatabase by inject()
+    private val currencyRepository: CurrencyRateApiWrapper by inject()
+    private val currencyRateDatabase: CurrencyRateDatabase by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         GlobalScope.launch(context = Dispatchers.IO) {
-//            val response = currencyRepository.get("EUR")
+//            val response = currencyRepository.getRates("EUR")
 //
-//            val list = mutableListOf<RatesEntity>()
+//            val list = mutableListOf<CurrencyRateEntity>()
 //            for (entity in response.rates) {
-//                list.add(RatesEntity(entity.key, entity.value))
+//                list.add(CurrencyRateEntity(entity.key, entity.value))
 //            }
 //
-//            ratesDatabase.ratesDataDao().insertAll(list)
+//            currencyRateDatabase.ratesDataDao().insertAll(list)
         }
     }
 }

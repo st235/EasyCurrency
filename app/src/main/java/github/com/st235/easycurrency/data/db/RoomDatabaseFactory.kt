@@ -5,10 +5,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import github.com.st235.easycurrency.BuildConfig
 
-class RoomDatabaseFactory {
-    companion object {
-        inline fun<reified T: RoomDatabase> create(context: Context): T = Room.databaseBuilder(
-            context.applicationContext, T::class.java, BuildConfig.DATABASE_NAME
-        ).build()
-    }
+object RoomDatabaseFactory {
+    inline fun<reified T: RoomDatabase> create(context: Context): T = Room.databaseBuilder(
+        context.applicationContext, T::class.java, BuildConfig.DATABASE_NAME
+    ).build()
 }

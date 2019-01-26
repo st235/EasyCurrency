@@ -6,10 +6,8 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "rates", indices = [Index(value = ["currency"], unique = true)])
-data class RatesEntity(
-    @PrimaryKey(autoGenerate = true) var id: Long?,
+data class CurrencyRateEntity(
+    @PrimaryKey(autoGenerate = true) var id: Long? = null,
     @ColumnInfo(name = "currency") var currency: String,
     @ColumnInfo(name = "rate") var rate: Double
-) {
-    constructor(currency: String, rate: Double): this(null, currency, rate)
-}
+)
