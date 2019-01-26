@@ -27,9 +27,9 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
+    implementation libs.kotlin
+    implementation libs.kotlinCoroutinesCore
+    implementation libs.kotlinCoroutinesAndroid
 
     implementation libs.appCompat
     implementation libs.constraint
@@ -37,6 +37,12 @@ dependencies {
     implementation libs.koin
     implementation libs.koinAndroid
     implementation libs.koinAndroidScope
+
+    implementation libs.glide
+    annotationProcessor compilers.glide
+
+    implementation libs.retrofit
+    implementation libs.gsonConverter
 
     implementation libs.timber
 }
