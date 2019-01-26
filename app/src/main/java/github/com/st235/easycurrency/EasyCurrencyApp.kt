@@ -12,6 +12,6 @@ class EasyCurrencyApp: Application() {
 
         ToolsInitializer.init(this, BuildConfig.DEBUG)
         startKoin(this, appModules)
-        BackgroundFactory.enqueueWork()
+        BackgroundFactory.enqueueJob()
     }
 }
