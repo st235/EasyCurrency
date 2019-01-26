@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -15,6 +16,9 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField "int", "DATABASE_VERSION", "1"
+            buildConfigField "String", "DATABASE_NAME", "\"rates_debug.db\""
+
             buildConfigField "String", "REVOLUT_BASE_URL", "\"https://revolut.duckdns.org\""
 
             minifyEnabled false
@@ -22,6 +26,9 @@ android {
         }
 
         release {
+            buildConfigField "int", "DATABASE_VERSION", "1"
+            buildConfigField "String", "DATABASE_NAME", "\"rates.db\""
+
             buildConfigField "String", "REVOLUT_BASE_URL", "\"https://revolut.duckdns.org\""
 
             minifyEnabled true
@@ -43,10 +50,14 @@ dependencies {
     implementation libs.koinAndroidScope
 
     implementation libs.glide
-    annotationProcessor compilers.glide
+    kapt compilers.glide
+
+    implementation libs.room
+    kapt compilers.room
 
     implementation libs.retrofit
     implementation libs.gsonConverter
 
     implementation libs.timber
+    implementation libs.stetho
 }

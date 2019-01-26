@@ -8,6 +8,7 @@ ext.versions = [
         koin              : '1.0.2',
         retrofit          : '2.4.0',
         glide             : '4.8.0',
+        room              : '1.1.0',
 
         stetho			  : '1.5.0',
         timber            : '4.7.1',
@@ -31,6 +32,7 @@ ext.libs = [
         koinAndroidScope        : "org.koin:koin-android-scope:$versions.koin",
 
         glide                   : "com.github.bumptech.glide:glide:$versions.glide",
+        room                    : "android.arch.persistence.room:runtime:$versions.room",
 
         stetho			        : "com.facebook.stetho:stetho:$versions.stetho",
         timber                  : "com.jakewharton.timber:timber:$versions.timber",
@@ -38,4 +40,5 @@ ext.libs = [
 
 ext.compilers = [
         glide       : "com.github.bumptech.glide:compiler:$versions.glide",
+        room        : "android.arch.persistence.room:compiler:$versions.room",
 ]
