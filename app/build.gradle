@@ -15,11 +15,15 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField "String", "REVOLUT_BASE_URL", "\"https://revolut.duckdns.org\""
+
             minifyEnabled false
             versionNameSuffix '-debug'
         }
 
         release {
+            buildConfigField "String", "REVOLUT_BASE_URL", "\"https://revolut.duckdns.org\""
+
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
