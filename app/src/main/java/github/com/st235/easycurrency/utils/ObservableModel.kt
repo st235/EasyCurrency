@@ -6,21 +6,21 @@ typealias Observer<T> = (response: T) -> Unit
 
 abstract class ObservableModel<T> {
 
-    private val currencyObservers: MutableList<Observer<T>> = mutableListOf()
+    private val observersList: MutableList<Observer<T>> = mutableListOf()
 
     @AnyThread
     fun addObserver(observer: Observer<T>) {
-        currencyObservers.add(observer)
+        observersList.add(observer)
     }
 
     @AnyThread
     fun removeObserver(observer: Observer<T>) {
-        currencyObservers.remove(observer)
+        observersList.remove(observer)
     }
 
     @AnyThread
     protected fun notifyObservers(result: T) {
-        for (observer in currencyObservers) {
+        for (observer in observersList) {
             observer(result)
         }
     }
