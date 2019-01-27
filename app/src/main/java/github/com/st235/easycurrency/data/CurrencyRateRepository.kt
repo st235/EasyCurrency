@@ -27,6 +27,10 @@ class CurrencyRatesRepository(private val inMemoryModel: CurrencyRateInMemoryMod
         private const val TAG = "[RatesRepository]"
     }
 
+    init {
+        startUpdating()
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun startUpdating() {
         Timber.tag(TAG).v("Start updating")
@@ -38,9 +42,10 @@ class CurrencyRatesRepository(private val inMemoryModel: CurrencyRateInMemoryMod
         Timber.tag(TAG).v("Update task called")
 
         GlobalScope.launch {
-            val rates = apiWrapper.getRates(prefs.baseCurrency).await()
-            inMemoryModel.update(rates)
-            withContext(context = Dispatchers.Main) { notifyObservers(rates) }
+            val response = apiWrapper.getRates(prefs.baseCurrency).await()
+            response.rates.put(response.base, BASE_TO_BASE_CONVERT_RATIO)
+            inMemoryModel.update(response)
+            notifyObservers(response)
         }
     }
 

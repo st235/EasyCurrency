@@ -50,12 +50,6 @@ class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
         Timber.tag(TAG).d("Perform to update database")
 
         val dbRatesEntities = mutableListOf<CurrencyRateEntity>()
-        dbRatesEntities.add(
-            CurrencyRateEntity(
-                currency = ratesResponse.base,
-                rate = BASE_TO_BASE_CONVERT_RATIO
-            )
-        )
         for (currencyRatePair in ratesResponse.rates) {
             dbRatesEntities.add(
                 CurrencyRateEntity(

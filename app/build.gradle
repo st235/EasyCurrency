@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "github.com.st235.easycurrency"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "0.1"
@@ -46,6 +46,7 @@ dependencies {
 
     implementation libs.appCompat
     implementation libs.constraint
+    implementation libs.recyclerview
 
     implementation libs.koin
     implementation libs.koinAndroid

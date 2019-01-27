@@ -10,6 +10,9 @@ import github.com.st235.easycurrency.data.inmemory.CurrencyRateInMemoryModel
 import github.com.st235.easycurrency.data.net.CurrencyRateApi
 import github.com.st235.easycurrency.data.net.RetrofitFactory
 import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
+import github.com.st235.easycurrency.domain.CurrencyListHolder
+import github.com.st235.easycurrency.presentational.main.CurrenciesAdapter
+import github.com.st235.easycurrency.presentational.main.MainPresenter
 import github.com.st235.easycurrency.utils.UpdateTimer
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
@@ -42,6 +45,17 @@ private val mainModule = module {
      * utils stage
      */
     single { UpdateTimer() }
+
+    /**
+     * domain stage
+     */
+    single { CurrencyListHolder(get()) }
+
+    /**
+     * presentation stage
+     */
+    single { MainPresenter(get()) }
+    single { CurrenciesAdapter() }
 }
 
 val appModules = listOf(mainModule)
