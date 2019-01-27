@@ -12,6 +12,7 @@
         android:gravity="center"
         android:inputType="numberDecimal"
         android:digits="0123456789.,"
+        android:imeOptions="flagNoExtractUi"
         android:textSize="14sp"
         android:focusable="true"
         android:hint="0.00"
