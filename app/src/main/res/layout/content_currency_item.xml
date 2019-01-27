@@ -1,50 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/currencyItemRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <github.com.st235.easycurrency.components.CircularImageView
-        android:id="@+id/currencyAvatar"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_margin="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:cl_text_color="#fff"
-        app:cl_text_size="20sp"/>
-
     <TextView
-        android:id="@+id/currencyIsoCode"
+        android:id="@+id/currencyAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:textSize="30sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/currencyAvatar"
-        app:layout_constraintEnd_toStartOf="@+id/currencyInputValue"
-        app:layout_constraintBottom_toTopOf="@+id/currencyTitle"
-        app:layout_constraintHorizontal_bias="0.0"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/currencyTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="14dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/currencyIsoCode"
+        android:layout_marginTop="18dp"
+        android:textSize="14sp"
+        android:textColor="@color/colorDark80"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/currencyAvatar"
+        app:layout_constraintEnd_toStartOf="@+id/currencyInputValue"
+        app:layout_constraintBottom_toTopOf="@+id/currencyIsoCode"
+        app:layout_constraintHorizontal_bias="0.0"/>
+
+    <TextView
+        android:id="@+id/currencyIsoCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="18dp"
+        android:textSize="12sp"
+        android:textColor="@color/colorDark40"
+        app:layout_constraintTop_toBottomOf="@+id/currencyTitle"
         app:layout_constraintStart_toEndOf="@+id/currencyAvatar"
         app:layout_constraintEnd_toStartOf="@+id/currencyInputValue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"/>
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/currencyInputValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="16dp"
+        android:inputType="numberDecimal"
+        app:layout_constraintVertical_bias="0.0"
+        app:backgroundTint="@color/colorDark30"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

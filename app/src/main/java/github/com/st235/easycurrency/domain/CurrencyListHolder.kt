@@ -8,6 +8,7 @@ import github.com.st235.easycurrency.utils.ObservableModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CurrencyListHolder(currencyRatesRepository: CurrencyRatesRepository):
     ObservableModel<List<Currency>>() {
@@ -18,6 +19,14 @@ class CurrencyListHolder(currencyRatesRepository: CurrencyRatesRepository):
 
     init {
         currencyRatesRepository.addObserver(this::onUpdate)
+    }
+
+    fun recalculateCurrencies(newBaseValue: Double) {
+        GlobalScope.launch {
+            baseValue = newBaseValue
+            updateValues()
+            withContext(context = Dispatchers.Main) { notifyObservers(currencies) }
+        }
     }
 
     @WorkerThread
@@ -37,10 +46,13 @@ class CurrencyListHolder(currencyRatesRepository: CurrencyRatesRepository):
 
     private fun createList(response: CurrencyRateResponse) {
         for (entry in response.rates) {
-            val currencyForEntry = Currency(entry.key, CurrencyUtils.getTitle(entry.key))
+            val currencyForEntry = Currency(entry.key, CurrencyUtils.getTitle(entry.key),
+                    entry.key == response.base)
             currencyForEntry.rate = entry.value
             currencies.add(currencyForEntry)
         }
+
+        currencies.sortWith(compareBy { it.isBase })
     }
 
     private fun updateList(response: CurrencyRateResponse) {

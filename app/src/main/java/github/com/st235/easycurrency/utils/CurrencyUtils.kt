@@ -14,4 +14,7 @@ object CurrencyUtils {
 
         return String(Character.toChars(firstChar)) + String(Character.toChars(secondChar))
     }
+
+    fun getBaseValue(newValue: Double, currency: github.com.st235.easycurrency.domain.Currency) =
+            newValue / currency.rate
 }

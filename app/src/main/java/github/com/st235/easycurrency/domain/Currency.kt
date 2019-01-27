@@ -1,7 +1,8 @@
 package github.com.st235.easycurrency.domain
 
 class Currency(val id: String,
-               val title: String) {
+               val title: String,
+               val isBase: Boolean = false) {
     var value: Double = 1.0
     var rate: Double = 1.0
 
