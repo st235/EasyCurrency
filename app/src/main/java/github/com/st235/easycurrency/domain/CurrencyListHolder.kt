@@ -10,10 +10,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CurrencyListHolder(currencyRatesRepository: CurrencyRatesRepository):
-    ObservableModel<List<Currency>>() {
+class CurrencyListHolder(private val currencyRatesRepository: CurrencyRatesRepository):
+    ObservableModel<Pair<Boolean, List<Currency>>>() {
 
     private var baseValue: Double = 1.0
+    private var isBaseCurrencyChanged: Boolean = false
 
     private val currencies: MutableList<Currency> = mutableListOf()
 
@@ -21,11 +22,25 @@ class CurrencyListHolder(currencyRatesRepository: CurrencyRatesRepository):
         currencyRatesRepository.addObserver(this::onUpdate)
     }
 
+    fun changeBaseCurrency(newCurrency: Currency) {
+        baseValue = newCurrency.value
+        currencyRatesRepository.changeBaseCurrency(newCurrency.id)
+
+        currencies[0].isBase = false
+        newCurrency.isBase = true
+
+        currencies.sortWith(compareBy { !it.isBase })
+        isBaseCurrencyChanged = true
+    }
+
     fun recalculateCurrencies(newBaseValue: Double) {
         GlobalScope.launch {
             baseValue = newBaseValue
             updateValues()
-            withContext(context = Dispatchers.Main) { notifyObservers(currencies) }
+            withContext(context = Dispatchers.Main) {
+                notifyObservers(isBaseCurrencyChanged to currencies)
+                isBaseCurrencyChanged = false
+            }
         }
     }
 
@@ -40,7 +55,8 @@ class CurrencyListHolder(currencyRatesRepository: CurrencyRatesRepository):
         updateValues()
 
         GlobalScope.launch(context = Dispatchers.Main) {
-            notifyObservers(currencies)
+            notifyObservers(isBaseCurrencyChanged to currencies)
+            isBaseCurrencyChanged = false
         }
     }
 

@@ -2,7 +2,7 @@ package github.com.st235.easycurrency.domain
 
 class Currency(val id: String,
                val title: String,
-               val isBase: Boolean = false) {
+               var isBase: Boolean = false) {
     var value: Double = 1.0
     var rate: Double = 1.0
 
@@ -13,11 +13,16 @@ class Currency(val id: String,
         other as Currency
 
         if (id != other.id) return false
+        if (isBase != other.isBase) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return id.hashCode()
+        var result = id.hashCode()
+        result = 31 * result + isBase.hashCode()
+        return result
     }
+
+
 }

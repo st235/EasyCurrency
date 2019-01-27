@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.domain.Currency
@@ -63,7 +64,7 @@ class CurrenciesAdapter()
         fun bind(currency: Currency) {
             currencyValue.removeTextChangedListener(onTextWatcher)
 
-            currencyValue.setText(currency.value.toString())
+            currencyValue.setText("%1.2f".format(currency.value))
             currencyCode.text = currency.id
             currencyTitle.text = currency.title
             currencyAvatar.text = CurrencyUtils.getEmoji(currency.id)
@@ -74,17 +75,23 @@ class CurrenciesAdapter()
 
     fun onNewData(newCurrencies: List<Currency>) {
         this.currencies = newCurrencies
-        notifyAllBut(currentlyFocusedItem, true)
+        notifyAllBut(currentlyFocusedItem)
     }
 
-    private fun notifyAllBut(one: Int, payload: Any) {
+    fun onNewOrder(newCurrencies: List<Currency>) {
+        val diffResult = DiffUtil.calculateDiff(CurrencyDiffUtilCallback(currencies, newCurrencies), true)
+        this.currencies = newCurrencies
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    private fun notifyAllBut(one: Int) {
         if (one == NO_POSITION) {
-            notifyAllBut(0, payload)
+            notifyItemRangeChanged(0, itemCount)
             return
         }
 
-        notifyItemRangeChanged(0, one, payload)
-        notifyItemRangeChanged(one + 1, itemCount, payload)
+        notifyItemRangeChanged(0, one)
+        notifyItemRangeChanged(one + 1, itemCount)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrenciesViewHolder {

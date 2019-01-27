@@ -51,7 +51,8 @@ class CurrencyRatesRepository(private val inMemoryModel: CurrencyRateInMemoryMod
 
     fun changeBaseCurrency(baseCurrency: String) {
         Timber.tag(TAG).v("Change base currency to $baseCurrency")
-
+        prefs.baseCurrency = baseCurrency
+        update()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)

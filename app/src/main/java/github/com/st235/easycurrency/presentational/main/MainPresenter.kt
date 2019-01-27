@@ -9,8 +9,12 @@ import github.com.st235.easycurrency.utils.Observer
 class MainPresenter(
     private val currenciesHolder: CurrencyListHolder): BasePresenter<MainView>() {
 
-    private val currenciesChangeObserver: Observer<List<Currency>> = { currencies: List<Currency> ->
-        view?.updateCurrenciesData(currencies)
+    private val currenciesChangeObserver: Observer<Pair<Boolean, List<Currency>>> = { currencies: Pair<Boolean, List<Currency>> ->
+        if (currencies.first) {
+            view?.updateBaseCurrency(currencies.second)
+        } else {
+            view?.updateCurrenciesData(currencies.second)
+        }
     }
 
     override fun onAttachView(v: MainView) {
@@ -22,6 +26,10 @@ class MainPresenter(
         currenciesHolder.recalculateCurrencies(
                 CurrencyUtils.getBaseValue(newValue, currency)
         )
+    }
+
+    fun onClickCurrency(newBaseCurrency: Currency) {
+        currenciesHolder.changeBaseCurrency(newBaseCurrency)
     }
 
     override fun onDetachView(v: MainView?) {
