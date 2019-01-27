@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"/>
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <github.com.st235.easycurrency.components.CurrencyEditText
         android:id="@+id/currencyInputValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

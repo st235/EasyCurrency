@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
+import github.com.st235.easycurrency.components.CurrencyEditText
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.utils.*
 
@@ -29,7 +30,7 @@ class CurrenciesAdapter()
 
     inner class CurrenciesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val currencyItemRoot: View = itemView.findViewById(R.id.currencyItemRoot)
-        private val currencyValue: EditText = itemView.findViewById(R.id.currencyInputValue)
+        private val currencyValue: CurrencyEditText = itemView.findViewById(R.id.currencyInputValue)
         private val currencyCode: TextView = itemView.findViewById(R.id.currencyIsoCode)
         private val currencyTitle: TextView = itemView.findViewById(R.id.currencyTitle)
         private val currencyAvatar: TextView = itemView.findViewById(R.id.currencyAvatar)
@@ -59,14 +60,15 @@ class CurrenciesAdapter()
         }
 
         fun bind(currency: Currency) {
-            currencyValue.removeTextChangedListener(onTextWatcher)
+            currencyValue.removeTextWatcher(onTextWatcher)
 
-            currencyValue.setText("%1.2f".format(currency.value))
+            currencyValue.changeInputText("%1.2f".format(currency.value))
+            currencyValue.setSign(CurrencyUtils.getSign(currency.id))
             currencyCode.text = currency.id
             currencyTitle.text = currency.title
             currencyAvatar.text = CurrencyUtils.getEmoji(currency.id)
 
-            currencyValue.addTextChangedListener(onTextWatcher)
+            currencyValue.addTextWatcher(onTextWatcher)
         }
     }
 

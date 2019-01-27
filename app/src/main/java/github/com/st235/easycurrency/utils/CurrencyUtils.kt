@@ -5,6 +5,8 @@ import java.util.*
 object CurrencyUtils {
     fun getTitle(code: String) = Currency.getInstance(code).displayName
 
+    fun getSign(code: String) = Currency.getInstance(code).symbol
+
     fun getEmoji(code: String): String {
         val flagOffset = 0x1F1E6
         val asciiOffset = 0x41
