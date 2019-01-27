@@ -27,7 +27,6 @@ ext.libs = [
         constraint              : "androidx.constraintlayout:constraintlayout:$versions.constraint",
         recyclerview            : "androidx.recyclerview:recyclerview:1.0.0-rc02",
 
-
         retrofit                : "com.squareup.retrofit2:retrofit:$versions.retrofit",
         gsonConverter           : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
 

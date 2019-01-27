@@ -52,7 +52,7 @@ class CurrencyListHolder(currencyRatesRepository: CurrencyRatesRepository):
             currencies.add(currencyForEntry)
         }
 
-        currencies.sortWith(compareBy { it.isBase })
+        currencies.sortWith(compareBy { !it.isBase })
     }
 
     private fun updateList(response: CurrencyRateResponse) {

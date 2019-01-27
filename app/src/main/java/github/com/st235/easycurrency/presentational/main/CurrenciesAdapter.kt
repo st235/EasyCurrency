@@ -17,6 +17,9 @@ class CurrenciesAdapter()
     : RecyclerView.Adapter<CurrenciesAdapter.CurrenciesViewHolder>() {
     private companion object {
         private const val NO_POSITION = -1
+
+        private const val BASE = 0
+        private const val ORDINARY = 1
     }
 
     private var currentlyFocusedItem = -1
@@ -86,13 +89,16 @@ class CurrenciesAdapter()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrenciesViewHolder {
         val context = parent.context
-        val view = LayoutInflater.from(context).inflate(R.layout.content_currency_item, parent, false)
+        val layoutId = if (viewType == BASE) R.layout.content_base_currency_item else R.layout.content_currency_item
+        val view = LayoutInflater.from(context).inflate(layoutId, parent, false)
         return CurrenciesViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CurrenciesViewHolder, position: Int) {
         holder.bind(currencies[position])
     }
+
+    override fun getItemViewType(position: Int) = if (currencies[position].isBase) BASE else ORDINARY
 
     override fun getItemCount() = currencies.size
 }
