@@ -13,6 +13,7 @@
         android:inputType="numberDecimal"
         android:textSize="14sp"
         android:focusable="true"
+        android:hint="0.00"
         android:focusableInTouchMode="true"
         android:layout_margin="1dp"
         android:background="@null"
