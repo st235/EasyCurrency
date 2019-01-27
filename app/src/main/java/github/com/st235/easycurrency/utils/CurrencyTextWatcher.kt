@@ -7,15 +7,16 @@ import java.util.*
 
 abstract class CurrencyTextWatcher: TextWatcher {
 
+    private val format = NumberFormat.getInstance(Locale.getDefault())
+
     override fun afterTextChanged(s: Editable?) {
-        val format = NumberFormat.getInstance(Locale.getDefault())
         var result = 0.0
         val text = s.toString()
+
         if (text.isNotEmpty()) {
             val number = format.parse(s.toString())
             result = number.toDouble()
         }
-
 
         onValueChanged(result)
     }
