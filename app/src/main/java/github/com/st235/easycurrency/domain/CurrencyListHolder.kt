@@ -29,7 +29,7 @@ class CurrencyListHolder(private val currencyRatesRepository: CurrencyRatesRepos
         currencies[0].isBase = false
         newCurrency.isBase = true
 
-        currencies.sortWith(compareBy { !it.isBase })
+        currencies.sortWith(compareBy ({ !it.isBase }, { it.title }))
         isBaseCurrencyChanged = true
     }
 
@@ -68,7 +68,7 @@ class CurrencyListHolder(private val currencyRatesRepository: CurrencyRatesRepos
             currencies.add(currencyForEntry)
         }
 
-        currencies.sortWith(compareBy { !it.isBase })
+        currencies.sortWith(compareBy ({ !it.isBase }, { it.title }))
     }
 
     private fun updateList(response: CurrencyRateResponse) {

@@ -9,10 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.domain.Currency
-import github.com.st235.easycurrency.utils.CurrencyTextWatcher
-import github.com.st235.easycurrency.utils.CurrencyUtils
-import github.com.st235.easycurrency.utils.OnItemClickListener
-import github.com.st235.easycurrency.utils.OnItemValueChangedListener
+import github.com.st235.easycurrency.utils.*
 
 class CurrenciesAdapter()
     : RecyclerView.Adapter<CurrenciesAdapter.CurrenciesViewHolder>() {
@@ -79,9 +76,8 @@ class CurrenciesAdapter()
     }
 
     fun onNewOrder(newCurrencies: List<Currency>) {
-        val diffResult = DiffUtil.calculateDiff(CurrencyDiffUtilCallback(currencies, newCurrencies), true)
         this.currencies = newCurrencies
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     private fun notifyAllBut(one: Int) {
