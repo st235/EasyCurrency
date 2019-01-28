@@ -23,6 +23,4 @@ class Currency(val id: String,
         result = 31 * result + isBase.hashCode()
         return result
     }
-
-
 }

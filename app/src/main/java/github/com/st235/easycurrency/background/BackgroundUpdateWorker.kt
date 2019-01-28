@@ -37,8 +37,8 @@ class BackgroundUpdateWorker(context: Context,
                 storageHelper.write(rates)
                 result = Result.success()
                 Timber.d("background task: update finished")
-            } catch (exception: Throwable) {
-                Timber.w(exception, "background task: failed with an exception")
+            } catch (throwable: Throwable) {
+                Timber.w(throwable, "background task: failed with an exception")
             }
         }
 

@@ -4,7 +4,7 @@ import github.com.st235.easycurrency.BuildConfig
 import github.com.st235.easycurrency.data.CurrencyRateStorageHelper
 import github.com.st235.easycurrency.data.net.CurrencyRateApiWrapper
 import github.com.st235.easycurrency.data.db.CurrencyRateDatabase
-import github.com.st235.easycurrency.data.CurrencyRatesRepository
+import github.com.st235.easycurrency.data.CurrencyRateRepository
 import github.com.st235.easycurrency.data.db.RoomDatabaseFactory
 import github.com.st235.easycurrency.data.inmemory.CurrencyRateInMemoryModel
 import github.com.st235.easycurrency.data.net.CurrencyRateApi
@@ -39,7 +39,7 @@ private val mainModule = module {
      */
     single { CurrencyRateInMemoryModel(get()) }
     single { CurrencyRateStorageHelper(get(), get()) }
-    single { CurrencyRatesRepository(get(), get(), get(), get()) }
+    single { CurrencyRateRepository(get(), get(), get(), get()) }
 
     /**
      * utils stage

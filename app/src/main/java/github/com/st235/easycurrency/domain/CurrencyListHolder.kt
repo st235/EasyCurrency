@@ -1,7 +1,7 @@
 package github.com.st235.easycurrency.domain
 
 import androidx.annotation.WorkerThread
-import github.com.st235.easycurrency.data.CurrencyRatesRepository
+import github.com.st235.easycurrency.data.CurrencyRateRepository
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
 import github.com.st235.easycurrency.utils.CurrencyUtils
 import github.com.st235.easycurrency.utils.ObservableModel
@@ -10,8 +10,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CurrencyListHolder(private val currencyRatesRepository: CurrencyRatesRepository):
-    ObservableModel<Pair<Boolean, List<Currency>>>() {
+typealias CurrenciesListPair = Pair<Boolean, List<Currency>>
+
+class CurrencyListHolder(private val currencyRateRepository: CurrencyRateRepository):
+    ObservableModel<CurrenciesListPair>() {
 
     private var baseValue: Double = 1.0
     private var isBaseCurrencyChanged: Boolean = false
@@ -19,12 +21,12 @@ class CurrencyListHolder(private val currencyRatesRepository: CurrencyRatesRepos
     private val currencies: MutableList<Currency> = mutableListOf()
 
     init {
-        currencyRatesRepository.addObserver(this::onUpdate)
+        currencyRateRepository.addObserver(this::onUpdate)
     }
 
     fun changeBaseCurrency(newCurrency: Currency) {
         baseValue = newCurrency.value
-        currencyRatesRepository.changeBaseCurrency(newCurrency.id)
+        currencyRateRepository.changeBaseCurrency(newCurrency.id)
 
         currencies[0].isBase = false
         newCurrency.isBase = true

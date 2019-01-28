@@ -18,10 +18,10 @@ import timber.log.Timber
 
 const val BASE_TO_BASE_CONVERT_RATIO = 1.0
 
-class CurrencyRatesRepository(private val inMemoryModel: CurrencyRateInMemoryModel,
-                              private val apiWrapper: CurrencyRateApiWrapper,
-                              private val prefs: CurrencyRatePrefs,
-                              private val updateTimer: UpdateTimer):
+class CurrencyRateRepository(private val inMemoryModel: CurrencyRateInMemoryModel,
+                             private val apiWrapper: CurrencyRateApiWrapper,
+                             private val prefs: CurrencyRatePrefs,
+                             private val updateTimer: UpdateTimer):
     ObservableModel<CurrencyRateResponse>(), LifecycleObserver {
     companion object {
         private const val TAG = "[RatesRepository]"
