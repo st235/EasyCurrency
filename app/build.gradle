@@ -12,8 +12,8 @@ android {
         applicationId "github.com.st235.easycurrency"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1
-        versionName "0.1"
+        versionCode 9
+        versionName "0.4"
     }
 
     buildTypes {
