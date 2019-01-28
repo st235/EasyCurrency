@@ -60,18 +60,18 @@ class CurrenciesAdapter()
         fun bind(currency: Currency) {
             currencyValue.removeTextWatcher(onTextWatcher)
 
-            currencyValue.changeInputText("%1.2f".format(currency.value))
-            currencyValue.setSign(CurrencyUtils.getSign(currency.id))
+            currencyValue.changeInputText(CurrencyUtils.getCurrencyOutputText(currency.value))
+            currencyValue.setSign(CurrencyUtils.getCurrencySignBy(currency.id))
             currencyCode.text = currency.id
             currencyTitle.text = currency.title
-            currencyAvatar.text = CurrencyUtils.getEmoji(currency.id)
+            currencyAvatar.text = CurrencyUtils.getCurrencyFlagEmojiBy(currency.id)
 
             currencyValue.addTextWatcher(onTextWatcher)
         }
 
         fun bindWithPayload(currency: Currency) {
             currencyValue.removeTextWatcher(onTextWatcher)
-            currencyValue.changeInputText("%1.2f".format(currency.value))
+            currencyValue.changeInputText(CurrencyUtils.getCurrencyOutputText(currency.value))
             currencyValue.addTextWatcher(onTextWatcher)
         }
     }
@@ -86,7 +86,7 @@ class CurrenciesAdapter()
         notifyDataSetChanged()
     }
 
-    private fun notifyAllBut(one: Int, payload: Any? = null) {
+    private fun notifyAllBut(one: Int) {
         if (one == NO_POSITION) {
             notifyItemRangeChanged(0, itemCount, true)
             return

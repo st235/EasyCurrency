@@ -24,7 +24,7 @@ class MainPresenter(
 
     fun onTypeValue(newValue: Double, currency: Currency) {
         currenciesHolder.recalculateCurrencies(
-                CurrencyUtils.getBaseValue(newValue, currency)
+                CurrencyUtils.calculateBaseValue(newValue, currency)
         )
     }
 

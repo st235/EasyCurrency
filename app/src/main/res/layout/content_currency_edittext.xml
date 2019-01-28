@@ -10,12 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:maxLength="15"
         android:inputType="numberDecimal"
-        android:digits="0123456789.,"
         android:imeOptions="flagNoExtractUi"
         android:textSize="14sp"
         android:focusable="true"
-        android:hint="0.00"
         android:focusableInTouchMode="true"
         android:layout_margin="1dp"
         android:background="@null"
@@ -30,7 +29,6 @@
         android:textColor="@color/colorCurrencyInputHint"
         android:textSize="14sp"
         android:gravity="center"
-        tools:text="$"
-        />
+        tools:text="$" />
 
 </merge>

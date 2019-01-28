@@ -62,7 +62,7 @@ class CurrencyListHolder(private val currencyRatesRepository: CurrencyRatesRepos
 
     private fun createList(response: CurrencyRateResponse) {
         for (entry in response.rates) {
-            val currencyForEntry = Currency(entry.key, CurrencyUtils.getTitle(entry.key),
+            val currencyForEntry = Currency(entry.key, CurrencyUtils.getCurrencyTitleBy(entry.key),
                     entry.key == response.base)
             currencyForEntry.rate = entry.value
             currencies.add(currencyForEntry)
