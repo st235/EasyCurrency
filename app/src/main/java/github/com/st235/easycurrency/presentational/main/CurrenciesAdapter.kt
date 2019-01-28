@@ -3,9 +3,7 @@ package github.com.st235.easycurrency.presentational.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.components.CurrencyEditText
@@ -70,6 +68,12 @@ class CurrenciesAdapter()
 
             currencyValue.addTextWatcher(onTextWatcher)
         }
+
+        fun bindWithPayload(currency: Currency) {
+            currencyValue.removeTextWatcher(onTextWatcher)
+            currencyValue.changeInputText("%1.2f".format(currency.value))
+            currencyValue.addTextWatcher(onTextWatcher)
+        }
     }
 
     fun onNewData(newCurrencies: List<Currency>) {
@@ -82,25 +86,34 @@ class CurrenciesAdapter()
         notifyDataSetChanged()
     }
 
-    private fun notifyAllBut(one: Int) {
+    private fun notifyAllBut(one: Int, payload: Any? = null) {
         if (one == NO_POSITION) {
-            notifyItemRangeChanged(0, itemCount)
+            notifyItemRangeChanged(0, itemCount, true)
             return
         }
 
-        notifyItemRangeChanged(0, one)
-        notifyItemRangeChanged(one + 1, itemCount)
+        notifyItemRangeChanged(0, one, true)
+        notifyItemRangeChanged(one + 1, itemCount, true)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrenciesViewHolder {
         val context = parent.context
-        val layoutId = if (viewType == BASE) R.layout.content_base_currency_item else R.layout.content_currency_item
+        val layoutId = if (viewType == BASE) R.layout.item_base_currency else R.layout.item_ordinary_currency
         val view = LayoutInflater.from(context).inflate(layoutId, parent, false)
         return CurrenciesViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CurrenciesViewHolder, position: Int) {
         holder.bind(currencies[position])
+    }
+
+    override fun onBindViewHolder(holder: CurrenciesViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            onBindViewHolder(holder, position)
+            return
+        }
+
+        holder.bindWithPayload(currencies[position])
     }
 
     override fun getItemViewType(position: Int) = if (currencies[position].isBase) BASE else ORDINARY

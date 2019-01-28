@@ -4,7 +4,17 @@
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#4F4F4F</color>
 
+    <color name="colorCurrencyTitle">@color/colorDark80</color>
+    <color name="colorCurrencyCode">@color/colorDark40</color>
+    <color name="colorCurrencyInputColor">@color/colorDark30</color>
+    <color name="colorCurrencyInputHint">@color/colorDark40</color>
+    <color name="colorCurrencyInputUnderline">@color/colorDark30</color>
+
     <color name="colorDark80">#CC000000</color>
     <color name="colorDark40">#66000000</color>
     <color name="colorDark30">#4D000000</color>
+
+    <color name="colorNightDark">#1a1a1d</color>
+    <color name="colorNightGrey">#606165</color>
+    <color name="colorNightLightGrey">#45464a</color>
 </resources>
