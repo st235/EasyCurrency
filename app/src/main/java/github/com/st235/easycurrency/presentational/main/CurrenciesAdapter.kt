@@ -86,6 +86,11 @@ class CurrenciesAdapter
             return
         }
 
+        if (this.currencies.isEmpty()) {
+            onFirstUpdate(newCurrencies)
+            return
+        }
+
         this.currencies = newCurrencies
         notifyAllBut(currentlyFocusedItem)
     }
@@ -128,4 +133,10 @@ class CurrenciesAdapter
     override fun getItemViewType(position: Int) = if (currencies[position].isBase) BASE else ORDINARY
 
     override fun getItemCount() = currencies.size
+
+    private fun onFirstUpdate(newCurrencies: List<Currency>) {
+        Timber.tag(TAG).v("Called on first update")
+        this.currencies = newCurrencies
+        notifyDataSetChanged()
+    }
 }
