@@ -7,8 +7,8 @@ Easy way to convert currencies! 💶
 ### Features
 
 - [x] Support around 40 currencies
-- [x] Updates per seconds
-- [ ] Offline updates every 2 hours
+- [x] Currencies has been updated every 1 second
+- [x] Offline updates every 1 hour
 - [x] Night mode! 🌝
 - [ ] Sticky list header
 - [ ] Bug fixes & improvements
