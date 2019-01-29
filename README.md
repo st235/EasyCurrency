@@ -13,6 +13,12 @@ Easy way to convert currencies! 💶
 - [ ] Sticky list header
 - [ ] Bug fixes & improvements
 
+### Technologies
+- Kotlin + Coroutines
+- Koin
+- Room + WorkManager (for offline mode)
+- Retrofit
+
 ### Screenshot
 
 <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/daily_interface.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/night_interface.png" width="270" height="480">

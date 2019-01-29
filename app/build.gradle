@@ -53,9 +53,6 @@ dependencies {
     implementation libs.koinAndroid
     implementation libs.koinAndroidScope
 
-    implementation libs.glide
-    kapt compilers.glide
-
     implementation libs.room
     kapt compilers.room
 
