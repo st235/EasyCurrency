@@ -9,7 +9,7 @@ import timber.log.Timber
 
 class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
     companion object {
-        val TAG = "[RateApiWrapper]"
+        private const val TAG = "[RateApiWrapper]"
     }
 
     private var currentCall: Call<CurrencyRateResponse>? = null
@@ -19,13 +19,11 @@ class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
     fun getRates(baseCurrency: String): Deferred<CurrencyRateResponse> {
         val ratesDeferredRequest = CompletableDeferred<CurrencyRateResponse>()
 
-        if (isInUsage()) {
-            Timber.tag(TAG).w("Someone calls getRates while request is executed")
-        }
-
         currentCall = currencyRateApi.getCurrenciesConvertRate(baseCurrency)
         currentCall?.enqueue(object : Callback<CurrencyRateResponse> {
-            override fun onResponse(call: Call<CurrencyRateResponse>, response: Response<CurrencyRateResponse>) {
+            override fun onResponse(call: Call<CurrencyRateResponse>, response: Response<CurrencyRateResponse>) {            resetCurrentCall()
+                resetCurrentCall()
+
                 val convertRates = response.body()
                 Timber.tag(TAG).d("Fetching url (${call.request().url()}) completed with" +
                         " ${response.code()} response code and $convertRates body")
@@ -39,17 +37,23 @@ class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
             }
 
             override fun onFailure(call: Call<CurrencyRateResponse>, t: Throwable) {
+                resetCurrentCall()
                 Timber.tag(TAG).e(t, "There was an exception while fetching ${call.request().url()}")
                 ratesDeferredRequest.completeExceptionally(t)
             }
         })
 
         ratesDeferredRequest.invokeOnCompletion {
+            resetCurrentCall()
             if (ratesDeferredRequest.isCancelled) {
                 currentCall?.cancel()
             }
         }
 
         return ratesDeferredRequest
+    }
+
+    private fun resetCurrentCall() {
+        currentCall = null
     }
 }

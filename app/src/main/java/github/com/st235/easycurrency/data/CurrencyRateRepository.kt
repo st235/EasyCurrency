@@ -10,10 +10,8 @@ import github.com.st235.easycurrency.data.net.CurrencyRateResponse
 import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
 import github.com.st235.easycurrency.utils.ObservableModel
 import github.com.st235.easycurrency.utils.UpdateTimer
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 const val BASE_TO_BASE_CONVERT_RATIO = 1.0
@@ -41,11 +39,24 @@ class CurrencyRateRepository(private val inMemoryModel: CurrencyRateInMemoryMode
     fun update() {
         Timber.tag(TAG).v("Update task called")
 
+        if (apiWrapper.isInUsage()) {
+            Timber.tag(TAG).v("Update task cancelled")
+            return
+        }
+
         GlobalScope.launch {
-            val response = apiWrapper.getRates(prefs.baseCurrency).await()
-            response.rates.put(response.base, BASE_TO_BASE_CONVERT_RATIO)
-            inMemoryModel.update(response)
-            notifyObservers(response)
+            var response: CurrencyRateResponse? = null
+            try {
+                response = apiWrapper.getRates(prefs.baseCurrency).await()
+                response.rates[response.base] = BASE_TO_BASE_CONVERT_RATIO
+                inMemoryModel.update(response)
+            } catch (exception: Exception) {
+                Timber.tag(TAG).e(exception, "There was exception in network")
+                response = inMemoryModel.getOrRead()
+                Timber.tag(TAG).v("Trying to obtain offline with: $inMemoryModel")
+            } finally {
+                notifyObservers(response ?: return@launch)
+            }
         }
     }
 

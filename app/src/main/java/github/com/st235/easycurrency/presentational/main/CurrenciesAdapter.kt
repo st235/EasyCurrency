@@ -81,17 +81,18 @@ class CurrenciesAdapter
     }
 
     fun onNewData(newCurrencies: List<Currency>) {
+        this.currencies = newCurrencies
+
         if (isScrolling) {
             Timber.tag(TAG).v("Not updated")
             return
         }
 
         if (this.currencies.isEmpty()) {
-            onFirstUpdate(newCurrencies)
+            onFirstUpdate()
             return
         }
 
-        this.currencies = newCurrencies
         notifyAllBut(currentlyFocusedItem)
     }
 
@@ -134,9 +135,13 @@ class CurrenciesAdapter
 
     override fun getItemCount() = currencies.size
 
-    private fun onFirstUpdate(newCurrencies: List<Currency>) {
+    /**
+     * according to the documentation:
+     * notifyDataSetChanged more faster than notifyItemRangeChanged,
+     * so its better to use notifyDataSetChanged for first update
+     */
+    private fun onFirstUpdate() {
         Timber.tag(TAG).v("Called on first update")
-        this.currencies = newCurrencies
         notifyDataSetChanged()
     }
 }

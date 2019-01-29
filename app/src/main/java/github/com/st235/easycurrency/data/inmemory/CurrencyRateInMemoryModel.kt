@@ -14,6 +14,14 @@ class CurrencyRateInMemoryModel(private val storageHelper: CurrencyRateStorageHe
 
     fun get() = inMemoryCurrencyRate
 
+    @WorkerThread
+    fun getOrRead(): CurrencyRateResponse? {
+        if (inMemoryCurrencyRate == null) {
+            inMemoryCurrencyRate = storageHelper.read()
+        }
+        return inMemoryCurrencyRate
+    }
+
     fun update(currencyRate: CurrencyRateResponse) {
         inMemoryCurrencyRate = currencyRate
     }
