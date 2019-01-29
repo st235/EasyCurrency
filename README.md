@@ -15,7 +15,7 @@ Easy way to convert currencies! 💶
 
 ### Screenshot
 
-<img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/daily_interface.png" width="270" height="480">
+<img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/daily_interface.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/night_interface.png" width="270" height="480">
 
 ### License
 

@@ -5,8 +5,8 @@
     <color name="colorAccent">#FFFFFF</color>
 
     <color name="colorCurrencyTitle">@color/colorAccent</color>
-    <color name="colorCurrencyCode">@color/colorNightLightGrey</color>
+    <color name="colorCurrencyCode">@color/colorWhite40</color>
     <color name="colorCurrencyInputColor">@color/colorAccent</color>
-    <color name="colorCurrencyInputHint">@color/colorNightGrey</color>
-    <color name="colorCurrencyInputUnderline">@color/colorNightDark</color>
+    <color name="colorCurrencyInputHint">@color/colorWhite40</color>
+    <color name="colorCurrencyInputUnderline">@color/colorWhite30</color>
 </resources>
