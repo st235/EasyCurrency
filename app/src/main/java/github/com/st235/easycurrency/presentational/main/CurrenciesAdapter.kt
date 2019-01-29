@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.components.CurrencyEditText
 import github.com.st235.easycurrency.domain.Currency
-import github.com.st235.easycurrency.utils.CurrencyTextWatcher
-import github.com.st235.easycurrency.utils.CurrencyUtils
-import github.com.st235.easycurrency.utils.OnItemClickListener
-import github.com.st235.easycurrency.utils.OnItemValueChangedListener
+import github.com.st235.easycurrency.utils.*
+import timber.log.Timber
 
 class CurrenciesAdapter
-    : RecyclerView.Adapter<CurrenciesAdapter.CurrenciesViewHolder>() {
+    : RecyclerView.Adapter<CurrenciesAdapter.CurrenciesViewHolder>(), ScrollableAdapter {
     private companion object {
+        private const val TAG = "[CurrenciesAdapter]"
+
         private const val NO_POSITION = -1
 
         private const val BASE = 0
@@ -23,8 +23,9 @@ class CurrenciesAdapter
     }
 
     private var currentlyFocusedItem = -1
-
     private var currencies: List<Currency> = emptyList()
+
+    override var isScrolling = false
 
     var itemClickListener: OnItemClickListener<Currency>? = null
     var valueChangedListener: OnItemValueChangedListener<Double, Currency>? = null
@@ -80,6 +81,11 @@ class CurrenciesAdapter
     }
 
     fun onNewData(newCurrencies: List<Currency>) {
+        if (isScrolling) {
+            Timber.tag(TAG).v("Not updated")
+            return
+        }
+
         this.currencies = newCurrencies
         notifyAllBut(currentlyFocusedItem)
     }

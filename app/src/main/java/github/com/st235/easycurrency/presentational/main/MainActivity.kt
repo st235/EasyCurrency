@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.presentational.base.BaseActivity
+import github.com.st235.easycurrency.utils.CurrencyListScrollListener
 import github.com.st235.easycurrency.utils.OnItemClickListener
 import github.com.st235.easycurrency.utils.OnItemValueChangedListener
 import org.koin.android.ext.android.inject
@@ -38,6 +39,7 @@ class MainActivity : BaseActivity(), MainView {
         adapter.itemClickListener = onItemClickListener
 
         (currenciesRV.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        currenciesRV.addOnScrollListener(CurrencyListScrollListener(adapter))
         currenciesRV.layoutManager = LinearLayoutManager(this)
         currenciesRV.adapter = adapter
     }
