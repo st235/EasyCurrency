@@ -1,5 +1,7 @@
 package github.com.st235.easycurrency.data.net
 
+import androidx.annotation.WorkerThread
+import github.com.st235.easycurrency.utils.ThreadUtils
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
@@ -16,7 +18,10 @@ class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
 
     fun isInUsage() = currentCall != null && currentCall!!.isExecuted
 
+    @WorkerThread
     fun getRates(baseCurrency: String): Deferred<CurrencyRateResponse> {
+        ThreadUtils.assertOnBackgroundThread()
+
         val ratesDeferredRequest = CompletableDeferred<CurrencyRateResponse>()
 
         currentCall = currencyRateApi.getCurrenciesConvertRate(baseCurrency)

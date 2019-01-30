@@ -3,6 +3,7 @@ package github.com.st235.easycurrency.data.inmemory
 import androidx.annotation.WorkerThread
 import github.com.st235.easycurrency.data.CurrencyRateStorageHelper
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
+import github.com.st235.easycurrency.utils.ThreadUtils
 import timber.log.Timber
 
 class CurrencyRateInMemoryModel(private val storageHelper: CurrencyRateStorageHelper) {
@@ -16,6 +17,8 @@ class CurrencyRateInMemoryModel(private val storageHelper: CurrencyRateStorageHe
 
     @WorkerThread
     fun getOrRead(): CurrencyRateResponse? {
+        ThreadUtils.assertOnBackgroundThread()
+
         if (inMemoryCurrencyRate == null) {
             inMemoryCurrencyRate = storageHelper.read()
         }
@@ -28,6 +31,8 @@ class CurrencyRateInMemoryModel(private val storageHelper: CurrencyRateStorageHe
 
     @WorkerThread
     fun flush() {
+        ThreadUtils.assertOnBackgroundThread()
+
         Timber.tag(TAG).v("flush model to disk")
         val modelToFlush = inMemoryCurrencyRate ?: return
         storageHelper.write(modelToFlush)

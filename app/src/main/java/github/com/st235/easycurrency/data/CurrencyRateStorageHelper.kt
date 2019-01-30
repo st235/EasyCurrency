@@ -6,6 +6,7 @@ import github.com.st235.easycurrency.data.db.CurrencyRateEntity
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
 import github.com.st235.easycurrency.data.net.RatesMap
 import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
+import github.com.st235.easycurrency.utils.ThreadUtils
 import timber.log.Timber
 
 class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
@@ -16,6 +17,8 @@ class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
 
     @WorkerThread
     fun read(): CurrencyRateResponse? {
+        ThreadUtils.assertOnBackgroundThread()
+
         val rates = readDb()
         if (rates.isEmpty()) {
             return null
@@ -29,6 +32,8 @@ class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
 
     @WorkerThread
     private fun readDb(): RatesMap {
+        ThreadUtils.assertOnBackgroundThread()
+
         val rates = mutableMapOf<String, Double>()
         val dbRates = database.ratesDataDao().getAll()
 
@@ -41,12 +46,14 @@ class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
 
     @WorkerThread
     fun write(ratesResponse: CurrencyRateResponse) {
+        ThreadUtils.assertOnBackgroundThread()
         writeToDb(ratesResponse)
         writePrefs(ratesResponse)
     }
 
     @WorkerThread
     private fun writeToDb(ratesResponse: CurrencyRateResponse) {
+        ThreadUtils.assertOnBackgroundThread()
         Timber.tag(TAG).d("Perform to update database")
 
         val dbRatesEntities = mutableListOf<CurrencyRateEntity>()
@@ -63,6 +70,7 @@ class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
 
     @WorkerThread
     private fun writePrefs(ratesResponse: CurrencyRateResponse) {
+        ThreadUtils.assertOnBackgroundThread()
         Timber.tag(TAG).d("Perform to update prefs")
         prefs.updateDate = 0L
     }

@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import github.com.st235.easycurrency.data.CurrencyRateStorageHelper
 import github.com.st235.easycurrency.data.net.CurrencyRateApiWrapper
 import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
+import github.com.st235.easycurrency.utils.ThreadUtils
 import kotlinx.coroutines.runBlocking
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -25,6 +26,8 @@ class BackgroundUpdateWorker(context: Context,
 
     @WorkerThread
     override fun doWork(): Result {
+        ThreadUtils.assertOnBackgroundThread()
+
         var result = Result.failure()
         Timber.d("background task: start periodic task")
 
