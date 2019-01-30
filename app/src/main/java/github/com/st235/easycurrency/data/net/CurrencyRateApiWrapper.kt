@@ -26,7 +26,8 @@ class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
 
         currentCall = currencyRateApi.getCurrenciesConvertRate(baseCurrency)
         currentCall?.enqueue(object : Callback<CurrencyRateResponse> {
-            override fun onResponse(call: Call<CurrencyRateResponse>, response: Response<CurrencyRateResponse>) {            resetCurrentCall()
+            override fun onResponse(call: Call<CurrencyRateResponse>,
+                                    response: Response<CurrencyRateResponse>) {
                 resetCurrentCall()
 
                 val convertRates = response.body()

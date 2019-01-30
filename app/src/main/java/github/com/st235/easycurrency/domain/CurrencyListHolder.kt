@@ -17,7 +17,6 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
     ObservableModel<CurrenciesList>() {
 
     private var baseValue: Double = 1.0
-//    private var isBaseCurrencyChanged: Boolean = false
 
     private val currencies: MutableList<Currency> = mutableListOf()
 
