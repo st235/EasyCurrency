@@ -1,6 +1,8 @@
 package github.com.st235.easycurrency.presentational.main
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
@@ -27,23 +29,27 @@ class MainActivity : BaseActivity(), MainView {
         }
     }
 
-    private lateinit var currenciesRV: RecyclerView
+    private val onScrollToTopListener = {
+        currenciesRecyclerView.scrollToPosition(0)
+    }
+
+    private lateinit var currenciesProgressBar: ProgressBar
+    private lateinit var currenciesRecyclerView: RecyclerView
 
     override fun getLayout() = R.layout.activity_main
 
     override fun onInitViews() {
-        currenciesRV = findViewById(R.id.currenciesList)
+        currenciesRecyclerView = findViewById(R.id.currenciesList)
+        currenciesProgressBar = findViewById(R.id.currenciesProgressBar)
 
-        adapter.valueChangedListener = onItemValueChangedListener
         adapter.itemClickListener = onItemClickListener
-        adapter.onScrollToTopListener = {
-            currenciesRV.scrollToPosition(0)
-        }
+        adapter.onScrollToTopListener = onScrollToTopListener
+        adapter.valueChangedListener = onItemValueChangedListener
 
-        currenciesRV.setHasFixedSize(true)
-        currenciesRV.addOnScrollListener(CurrencyListScrollListener(adapter))
-        currenciesRV.layoutManager = LinearLayoutManager(this)
-        currenciesRV.adapter = adapter
+        currenciesRecyclerView.setHasFixedSize(true)
+        currenciesRecyclerView.addOnScrollListener(CurrencyListScrollListener(adapter))
+        currenciesRecyclerView.layoutManager = LinearLayoutManager(this)
+        currenciesRecyclerView.adapter = adapter
     }
 
     override fun onViewsInitialized(savedInstanceState: Bundle?) {
@@ -51,6 +57,9 @@ class MainActivity : BaseActivity(), MainView {
     }
 
     override fun updateCurrenciesData(currencies: List<Currency>) {
+        if (currenciesProgressBar.isShown) {
+            currenciesProgressBar.visibility = View.GONE
+        }
         adapter.onCurrenciesUpdated(currencies)
     }
 
