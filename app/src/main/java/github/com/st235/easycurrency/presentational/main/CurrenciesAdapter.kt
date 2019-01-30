@@ -81,14 +81,15 @@ class CurrenciesAdapter
     }
 
     fun onNewData(newCurrencies: List<Currency>) {
-        this.currencies = newCurrencies
+        val oldCurrencies = currencies
+        currencies = newCurrencies
 
         if (isScrolling) {
             Timber.tag(TAG).v("Not updated")
             return
         }
 
-        if (this.currencies.isEmpty()) {
+        if (oldCurrencies.isEmpty()) {
             onFirstUpdate()
             return
         }
