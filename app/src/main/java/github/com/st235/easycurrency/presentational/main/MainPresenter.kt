@@ -1,6 +1,6 @@
 package github.com.st235.easycurrency.presentational.main
 
-import github.com.st235.easycurrency.domain.CurrenciesListPair
+import github.com.st235.easycurrency.domain.CurrenciesList
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.domain.CurrencyListHolder
 import github.com.st235.easycurrency.presentational.base.BasePresenter
@@ -10,18 +10,14 @@ import github.com.st235.easycurrency.utils.Observer
 class MainPresenter(
     private val currenciesHolder: CurrencyListHolder): BasePresenter<MainView>() {
 
-    private val currenciesChangeObserverPair: Observer<CurrenciesListPair>
-            = { currenciesPair: CurrenciesListPair ->
-        if (currenciesPair.first) {
-            view?.updateBaseCurrency(currenciesPair.second)
-        } else {
-            view?.updateCurrenciesData(currenciesPair.second)
-        }
+    private val currenciesChangeObserver: Observer<CurrenciesList>
+            = { currencies: CurrenciesList ->
+        view?.updateCurrenciesData(currencies)
     }
 
     override fun onAttachView(v: MainView) {
         super.onAttachView(v)
-        currenciesHolder.addObserver(currenciesChangeObserverPair)
+        currenciesHolder.addObserver(currenciesChangeObserver)
     }
 
     fun onTypeValue(newValue: Double, currency: Currency) {
@@ -35,7 +31,7 @@ class MainPresenter(
     }
 
     override fun onDetachView(v: MainView?) {
-        currenciesHolder.addObserver(currenciesChangeObserverPair)
+        currenciesHolder.addObserver(currenciesChangeObserver)
         super.onDetachView(v)
     }
 }

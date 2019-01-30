@@ -4,12 +4,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.components.CurrencyEditText
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.utils.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
+
+typealias OnScrollToTopListener = () -> Unit
 
 class CurrenciesAdapter
     : RecyclerView.Adapter<CurrenciesAdapter.CurrenciesViewHolder>(), ScrollableAdapter {
@@ -22,13 +29,15 @@ class CurrenciesAdapter
         private const val ORDINARY = 1
     }
 
-    private var currentlyFocusedItem = -1
+    private var currentlyFocusedItem = NO_POSITION
     private var currencies: List<Currency> = emptyList()
 
     override var isScrolling = false
+    private var needToBeScrolled = false
 
     var itemClickListener: OnItemClickListener<Currency>? = null
     var valueChangedListener: OnItemValueChangedListener<Double, Currency>? = null
+    var onScrollToTopListener: OnScrollToTopListener? = null
 
     inner class CurrenciesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val currencyItemRoot: View = itemView.findViewById(R.id.currencyItemRoot)
@@ -54,6 +63,7 @@ class CurrenciesAdapter
 
         init {
             currencyItemRoot.setOnClickListener {
+                needToBeScrolled = true
                 val position = adapterPosition
                 itemClickListener?.onItemClick(currencies[position], position)
             }
@@ -73,43 +83,35 @@ class CurrenciesAdapter
             currencyValue.addTextWatcher(onTextWatcher)
         }
 
-        fun bindWithPayload(currency: Currency) {
+        fun bindWithPayload(value: Double) {
             currencyValue.removeTextWatcher(onTextWatcher)
-            currencyValue.changeInputText(CurrencyUtils.getCurrencyOutputText(currency.value))
+            currencyValue.changeInputText(CurrencyUtils.getCurrencyOutputText(value))
             currencyValue.addTextWatcher(onTextWatcher)
         }
     }
 
-    fun onNewData(newCurrencies: List<Currency>) {
-        val oldCurrencies = currencies
-        currencies = newCurrencies
-
+    fun onCurrenciesUpdated(newCurrencies: List<Currency>) {
         if (isScrolling) {
             Timber.tag(TAG).v("Not updated")
             return
         }
 
-        if (oldCurrencies.isEmpty()) {
-            onFirstUpdate()
-            return
-        }
-
-        notifyAllBut(currentlyFocusedItem)
+        onNewCurrencies(newCurrencies)
     }
 
-    fun onNewOrder(newCurrencies: List<Currency>) {
-        this.currencies = newCurrencies
-        notifyDataSetChanged()
-    }
-
-    private fun notifyAllBut(one: Int) {
-        if (one == NO_POSITION) {
-            notifyItemRangeChanged(0, itemCount, true)
-            return
+    private fun onNewCurrencies(newCurrencies: List<Currency>) {
+        GlobalScope.launch {
+            val diffUtilsCallback = CurrenciesDiffUtilsCallback(currencies, newCurrencies)
+            val diffUtilsResult = DiffUtil.calculateDiff(diffUtilsCallback, true)
+            withContext(Dispatchers.Main) {
+                diffUtilsResult.dispatchUpdatesTo(this@CurrenciesAdapter)
+                currencies = newCurrencies
+                if (needToBeScrolled) {
+                    needToBeScrolled = false
+                    onScrollToTopListener?.invoke()
+                }
+            }
         }
-
-        notifyItemRangeChanged(0, one, true)
-        notifyItemRangeChanged(one + 1, itemCount, true)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrenciesViewHolder {
@@ -129,20 +131,15 @@ class CurrenciesAdapter
             return
         }
 
-        holder.bindWithPayload(currencies[position])
+        if (position == currentlyFocusedItem) {
+            return
+        }
+
+        val newValue = payloads[0] as Double
+        holder.bindWithPayload(newValue)
     }
 
     override fun getItemViewType(position: Int) = if (currencies[position].isBase) BASE else ORDINARY
 
     override fun getItemCount() = currencies.size
-
-    /**
-     * according to the documentation:
-     * notifyDataSetChanged more faster than notifyItemRangeChanged,
-     * so its better to use notifyDataSetChanged for first update
-     */
-    private fun onFirstUpdate() {
-        Timber.tag(TAG).v("Called on first update")
-        notifyDataSetChanged()
-    }
 }

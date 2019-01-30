@@ -3,7 +3,6 @@ package github.com.st235.easycurrency.presentational.main
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.presentational.base.BaseActivity
@@ -37,8 +36,11 @@ class MainActivity : BaseActivity(), MainView {
 
         adapter.valueChangedListener = onItemValueChangedListener
         adapter.itemClickListener = onItemClickListener
+        adapter.onScrollToTopListener = {
+            currenciesRV.scrollToPosition(0)
+        }
 
-        (currenciesRV.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        currenciesRV.setHasFixedSize(true)
         currenciesRV.addOnScrollListener(CurrencyListScrollListener(adapter))
         currenciesRV.layoutManager = LinearLayoutManager(this)
         currenciesRV.adapter = adapter
@@ -48,16 +50,14 @@ class MainActivity : BaseActivity(), MainView {
         presenter.attachView(this)
     }
 
-    override fun updateBaseCurrency(currencies: List<Currency>) {
-        adapter.onNewOrder(currencies)
-    }
-
     override fun updateCurrenciesData(currencies: List<Currency>) {
-        adapter.onNewData(currencies)
+        adapter.onCurrenciesUpdated(currencies)
     }
 
     override fun onDestroy() {
         presenter.detachView()
         super.onDestroy()
     }
+
+
 }

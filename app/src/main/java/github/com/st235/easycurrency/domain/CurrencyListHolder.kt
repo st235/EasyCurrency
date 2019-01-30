@@ -11,13 +11,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-typealias CurrenciesListPair = Pair<Boolean, List<Currency>>
+typealias CurrenciesList = List<Currency>
 
 class CurrencyListHolder(private val currencyRateRepository: CurrencyRateRepository):
-    ObservableModel<CurrenciesListPair>() {
+    ObservableModel<CurrenciesList>() {
 
     private var baseValue: Double = 1.0
-    private var isBaseCurrencyChanged: Boolean = false
+//    private var isBaseCurrencyChanged: Boolean = false
 
     private val currencies: MutableList<Currency> = mutableListOf()
 
@@ -26,14 +26,15 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
     }
 
     fun changeBaseCurrency(newCurrency: Currency) {
-        baseValue = newCurrency.value
-        currencyRateRepository.changeBaseCurrency(newCurrency.id)
+        GlobalScope.launch {
+            baseValue = newCurrency.value
+            currencyRateRepository.changeBaseCurrency(newCurrency.id)
 
-        currencies[0].isBase = false
-        newCurrency.isBase = true
+            currencies[0].isBase = false
+            currencies.find { it.id == newCurrency.id }?.isBase = true
 
-        currencies.sortWith(compareBy ({ !it.isBase }, { it.title }))
-        isBaseCurrencyChanged = true
+            currencies.sortWith(compareBy({ !it.isBase }, { it.title }))
+        }
     }
 
     fun recalculateCurrencies(newBaseValue: Double) {
@@ -41,8 +42,7 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
             baseValue = newBaseValue
             updateValues()
             withContext(context = Dispatchers.Main) {
-                notifyObservers(isBaseCurrencyChanged to currencies)
-                isBaseCurrencyChanged = false
+                notifyObservers(currencies.map { i -> i })
             }
         }
     }
@@ -59,8 +59,7 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
         updateValues()
 
         GlobalScope.launch(context = Dispatchers.Main) {
-            notifyObservers(isBaseCurrencyChanged to currencies)
-            isBaseCurrencyChanged = false
+            notifyObservers(currencies.map { i -> i })
         }
     }
 
@@ -76,14 +75,16 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
     }
 
     private fun updateList(response: CurrencyRateResponse) {
-        for (currency in currencies) {
-            currency.rate = response.rates[currency.id]!!
+        for (i in 0 until currencies.size) {
+            val currency = currencies[i]
+            currencies[i] = Currency.copyWithNewRate(currency, response.rates[currency.id]!!)
         }
     }
 
     private fun updateValues() {
-        for (currency in currencies) {
-            currency.value = baseValue * currency.rate
+        for (i in 0 until currencies.size) {
+            val currency = currencies[i]
+            currencies[i] = Currency.copyWithNewValue(currency, baseValue * currency.rate)
         }
     }
 }
