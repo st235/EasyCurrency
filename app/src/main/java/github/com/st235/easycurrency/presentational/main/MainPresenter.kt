@@ -31,7 +31,7 @@ class MainPresenter(
     }
 
     override fun onDetachView(v: MainView?) {
-        currenciesHolder.addObserver(currenciesChangeObserver)
+        currenciesHolder.removeObserver(currenciesChangeObserver)
         super.onDetachView(v)
     }
 }
