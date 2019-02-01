@@ -1,5 +1,6 @@
 package github.com.st235.easycurrency.domain
 
+import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import github.com.st235.easycurrency.data.CurrencyRateRepository
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
@@ -24,18 +25,24 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
         currencyRateRepository.addObserver(this::onUpdate)
     }
 
+    @MainThread
     fun changeBaseCurrency(newCurrency: Currency) {
         GlobalScope.launch {
-            baseValue = newCurrency.value
-            currencyRateRepository.changeBaseCurrency(newCurrency.id)
-
-            currencies[0].isBase = false
-            currencies.find { it.id == newCurrency.id }?.isBase = true
-
-            currencies.sortWith(compareBy({ !it.isBase }, { it.title }))
+            changeBaseCurrencyInternal(newCurrency)
         }
     }
 
+    @Synchronized
+    private fun changeBaseCurrencyInternal(newCurrency: Currency) {
+        baseValue = newCurrency.value
+        currencyRateRepository.changeBaseCurrency(newCurrency.id)
+
+        currencies[0].isBase = false
+        currencies.find { it.id == newCurrency.id }?.isBase = true
+        sortCurrenciesList()
+    }
+
+    @MainThread
     fun recalculateCurrencies(newBaseValue: Double) {
         GlobalScope.launch {
             baseValue = newBaseValue
@@ -62,6 +69,7 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
         }
     }
 
+    @WorkerThread
     private fun createList(response: CurrencyRateResponse) {
         for (entry in response.rates) {
             val currencyForEntry = Currency(entry.key, CurrencyUtils.getCurrencyTitleBy(entry.key),
@@ -70,9 +78,10 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
             currencies.add(currencyForEntry)
         }
 
-        currencies.sortWith(compareBy ({ !it.isBase }, { it.title }))
+        sortCurrenciesList()
     }
 
+    @WorkerThread
     private fun updateList(response: CurrencyRateResponse) {
         for (i in 0 until currencies.size) {
             val currency = currencies[i]
@@ -80,10 +89,16 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
         }
     }
 
+    @WorkerThread
     private fun updateValues() {
         for (i in 0 until currencies.size) {
             val currency = currencies[i]
             currencies[i] = Currency.copyWithNewValue(currency, baseValue * currency.rate)
         }
+    }
+
+    @Synchronized
+    private fun sortCurrenciesList() {
+        currencies.sortWith(compareBy({ !it.isBase }, { it.title }))
     }
 }
