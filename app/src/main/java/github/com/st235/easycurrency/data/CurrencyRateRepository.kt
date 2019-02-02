@@ -69,8 +69,10 @@ class CurrencyRateRepository(private val inMemoryModel: CurrencyRateInMemoryMode
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun stopUpdating() {
-        Timber.tag(TAG).v("Stop updating")
-        updateTimer.removeCallback()
-        inMemoryModel.flush()
+        GlobalScope.launch {
+            Timber.tag(TAG).v("Stop updating")
+            updateTimer.removeCallback()
+            inMemoryModel.flush()
+        }
     }
 }
