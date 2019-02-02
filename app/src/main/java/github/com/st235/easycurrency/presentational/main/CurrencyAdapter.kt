@@ -106,7 +106,7 @@ class CurrenciesAdapter
 
     private fun onNewCurrencies(newCurrencies: List<Currency>) {
         GlobalScope.launch {
-            val diffUtilsCallback = CurrenciesDiffUtilsCallback(currencies, newCurrencies)
+            val diffUtilsCallback = CurrencyDiffUtilsCallback(currencies, newCurrencies)
             val diffUtilsResult = DiffUtil.calculateDiff(diffUtilsCallback, true)
             withContext(Dispatchers.Main) {
                 diffUtilsResult.dispatchUpdatesTo(this@CurrenciesAdapter)

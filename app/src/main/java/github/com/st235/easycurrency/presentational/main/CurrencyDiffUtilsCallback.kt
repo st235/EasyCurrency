@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.utils.CurrencyUtils
 
-class CurrenciesDiffUtilsCallback(
+class CurrencyDiffUtilsCallback(
         private val oldCurrenciesList: List<Currency>,
         private val newCurrenciesList: List<Currency>
 ): DiffUtil.Callback() {
