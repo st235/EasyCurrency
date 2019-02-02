@@ -1,7 +1,7 @@
 package github.com.st235.easycurrency.data.net
 
 import androidx.annotation.WorkerThread
-import github.com.st235.easycurrency.utils.ThreadUtils
+import github.com.st235.easycurrency.utils.debug.ThreadUtils
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
 import retrofit2.Call

@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import github.com.st235.easycurrency.background.BackgroundFactory
 import github.com.st235.easycurrency.di.appModules
-import github.com.st235.easycurrency.utils.ToolsInitializer
+import github.com.st235.easycurrency.utils.debug.ToolsInitializer
 import org.koin.android.ext.android.startKoin
 
 class EasyCurrencyApp: Application() {

@@ -1,4 +1,4 @@
-package github.com.st235.easycurrency.utils
+package github.com.st235.easycurrency.utils.debug
 
 import android.content.Context
 import com.facebook.stetho.Stetho

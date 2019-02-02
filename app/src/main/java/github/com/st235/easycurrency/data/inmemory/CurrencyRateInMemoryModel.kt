@@ -3,7 +3,7 @@ package github.com.st235.easycurrency.data.inmemory
 import androidx.annotation.WorkerThread
 import github.com.st235.easycurrency.data.CurrencyRateStorageHelper
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
-import github.com.st235.easycurrency.utils.ThreadUtils
+import github.com.st235.easycurrency.utils.debug.ThreadUtils
 import timber.log.Timber
 
 class CurrencyRateInMemoryModel(private val storageHelper: CurrencyRateStorageHelper) {

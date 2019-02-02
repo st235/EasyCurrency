@@ -1,4 +1,4 @@
-package github.com.st235.easycurrency.utils
+package github.com.st235.easycurrency.utils.events
 
 import androidx.recyclerview.widget.RecyclerView
 

@@ -6,7 +6,7 @@ import github.com.st235.easycurrency.data.CurrencyRateRepository
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
 import github.com.st235.easycurrency.utils.CurrencyUtils
 import github.com.st235.easycurrency.utils.ObservableModel
-import github.com.st235.easycurrency.utils.ThreadUtils
+import github.com.st235.easycurrency.utils.debug.ThreadUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

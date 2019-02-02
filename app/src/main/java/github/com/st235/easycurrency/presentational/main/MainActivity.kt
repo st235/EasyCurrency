@@ -8,16 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.presentational.base.BaseActivity
-import github.com.st235.easycurrency.utils.CurrencyListScrollListener
-import github.com.st235.easycurrency.utils.OnItemClickListener
-import github.com.st235.easycurrency.utils.OnItemValueChangedListener
+import github.com.st235.easycurrency.utils.events.CurrencyListScrollListener
+import github.com.st235.easycurrency.utils.events.OnItemClickListener
+import github.com.st235.easycurrency.utils.events.OnItemValueChangedListener
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity(), MainView {
     private val presenter: MainPresenter by inject()
     private val adapter: CurrenciesAdapter by inject()
 
-    private val onItemValueChangedListener = object: OnItemValueChangedListener<Double, Currency> {
+    private val onItemValueChangedListener = object:
+        OnItemValueChangedListener<Double, Currency> {
         override fun onItemValueChanged(value: Double, item: Currency, position: Int) {
             presenter.onTypeValue(value, item)
         }
@@ -47,7 +48,11 @@ class MainActivity : BaseActivity(), MainView {
         adapter.valueChangedListener = onItemValueChangedListener
 
         currenciesRecyclerView.setHasFixedSize(true)
-        currenciesRecyclerView.addOnScrollListener(CurrencyListScrollListener(adapter))
+        currenciesRecyclerView.addOnScrollListener(
+            CurrencyListScrollListener(
+                adapter
+            )
+        )
         currenciesRecyclerView.layoutManager = LinearLayoutManager(this)
         currenciesRecyclerView.adapter = adapter
     }

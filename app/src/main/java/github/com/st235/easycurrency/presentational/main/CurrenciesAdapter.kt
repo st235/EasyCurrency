@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.components.CurrencyEditText
 import github.com.st235.easycurrency.domain.Currency
-import github.com.st235.easycurrency.utils.CurrencyTextWatcher
+import github.com.st235.easycurrency.utils.events.CurrencyTextWatcher
 import github.com.st235.easycurrency.utils.CurrencyUtils
-import github.com.st235.easycurrency.utils.OnItemClickListener
-import github.com.st235.easycurrency.utils.OnItemValueChangedListener
-import github.com.st235.easycurrency.utils.ScrollableAdapter
+import github.com.st235.easycurrency.utils.events.OnItemClickListener
+import github.com.st235.easycurrency.utils.events.OnItemValueChangedListener
+import github.com.st235.easycurrency.utils.events.ScrollableAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,7 +23,8 @@ import timber.log.Timber
 typealias OnScrollToTopListener = () -> Unit
 
 class CurrenciesAdapter
-    : RecyclerView.Adapter<CurrenciesAdapter.CurrenciesViewHolder>(), ScrollableAdapter {
+    : RecyclerView.Adapter<CurrenciesAdapter.CurrenciesViewHolder>(),
+    ScrollableAdapter {
     private companion object {
         private const val TAG = "[CurrenciesAdapter]"
 

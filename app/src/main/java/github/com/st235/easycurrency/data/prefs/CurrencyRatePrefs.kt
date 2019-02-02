@@ -2,7 +2,7 @@ package github.com.st235.easycurrency.data.prefs
 
 import android.content.Context
 import androidx.annotation.WorkerThread
-import github.com.st235.easycurrency.utils.ThreadUtils
+import github.com.st235.easycurrency.utils.debug.ThreadUtils
 
 private const val APP_PREFS = "currency_rate.prefs"
 private const val BASE_CURRENCY_VALUE = "base_currency"

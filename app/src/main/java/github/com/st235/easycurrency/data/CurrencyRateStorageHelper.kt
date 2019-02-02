@@ -6,7 +6,7 @@ import github.com.st235.easycurrency.data.db.CurrencyRateEntity
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
 import github.com.st235.easycurrency.data.net.RatesMap
 import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
-import github.com.st235.easycurrency.utils.ThreadUtils
+import github.com.st235.easycurrency.utils.debug.ThreadUtils
 import timber.log.Timber
 
 class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,

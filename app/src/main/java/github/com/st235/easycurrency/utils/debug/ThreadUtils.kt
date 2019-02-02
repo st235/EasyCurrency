@@ -1,4 +1,4 @@
-package github.com.st235.easycurrency.utils
+package github.com.st235.easycurrency.utils.debug
 
 import android.os.Looper
 import androidx.annotation.AnyThread
@@ -10,15 +10,19 @@ import timber.log.Timber
 object ThreadUtils {
     @MainThread
     fun assertOnMainThread() {
-        assertThat(Looper.getMainLooper().thread == Thread.currentThread(),
-                "Does not on main thread! Thread: ${Thread.currentThread().name}")
+        assertThat(
+            Looper.getMainLooper().thread == Thread.currentThread(),
+            "Does not on main thread! Thread: ${Thread.currentThread().name}"
+        )
         Timber.v("Thread name: ${Thread.currentThread().name}")
     }
 
     @WorkerThread
     fun assertOnBackgroundThread() {
-        assertThat(Looper.getMainLooper().thread != Thread.currentThread(),
-                "Does not on background thread! Thread: ${Thread.currentThread().name}")
+        assertThat(
+            Looper.getMainLooper().thread != Thread.currentThread(),
+            "Does not on background thread! Thread: ${Thread.currentThread().name}"
+        )
         Timber.v("Thread name: ${Thread.currentThread().name}")
     }
 

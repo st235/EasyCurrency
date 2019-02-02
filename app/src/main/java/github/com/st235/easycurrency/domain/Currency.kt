@@ -42,4 +42,8 @@ class Currency(val id: String,
         result = 31 * result + isBase.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "Currency(id='$id', title='$title', isBase=$isBase, value=$value, rate=$rate)"
+    }
 }

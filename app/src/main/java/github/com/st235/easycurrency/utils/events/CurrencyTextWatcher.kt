@@ -1,9 +1,9 @@
-package github.com.st235.easycurrency.utils
+package github.com.st235.easycurrency.utils.events
 
 import android.text.Editable
 import android.text.TextWatcher
+import github.com.st235.easycurrency.utils.CurrencyUtils
 import timber.log.Timber
-import java.lang.StringBuilder
 import java.text.NumberFormat
 import java.text.ParseException
 import java.util.*
