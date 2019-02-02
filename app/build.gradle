@@ -18,7 +18,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField "long", "RATES_EXPIRES_HOURS", "0"
+            buildConfigField "long", "RATES_EXPIRES_HOURS", "1"
 
             buildConfigField "int", "DATABASE_VERSION", "1"
             buildConfigField "String", "DATABASE_NAME", "\"rates_debug.db\""

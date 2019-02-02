@@ -13,6 +13,7 @@ class SnackbarHelper(private val activity: Activity) {
     @ColorInt private val actionColor: Int = ContextCompat.getColor(activity, R.color.colorSnackbarAction)
     private val snackbarCallback = object: BaseTransientBottomBar.BaseCallback<Snackbar>() {
         override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+            snackbar?.removeCallback(this)
             snackbar = null
         }
     }
@@ -22,22 +23,28 @@ class SnackbarHelper(private val activity: Activity) {
     private var isDismissedByUser = false
     private var lastUpdatedTime: Int = -1
 
-    fun showSnackbar(hoursDelta: Int) {
+    fun showSnackbar(hoursDelta: Int,
+                     isExpired: Boolean) {
         if (isDismissedByUser) {
             return
         }
 
-        if (snackbar != null && snackbar!!.isShownOrQueued) {
+        if (!isSnackbarVisible() && !isExpired) {
+            return
+        }
+
+        if (isSnackbarVisible() && !isExpired) {
+            dismissDialog(false)
+            return
+        }
+
+        if (isSnackbarVisible()) {
             if (hoursDelta != lastUpdatedTime) {
                 dismissDialog(false)
                 lastUpdatedTime = hoursDelta
             } else {
                 return
             }
-        }
-
-        if (snackbar != null && !snackbar!!.isShownOrQueued) {
-            snackbar!!.removeCallback(snackbarCallback)
         }
 
         val hoursText = activity.resources.getQuantityString(R.plurals.all_rates_are_outdated_hours,
@@ -52,6 +59,14 @@ class SnackbarHelper(private val activity: Activity) {
         snackbar!!.addCallback(snackbarCallback)
 
         snackbar!!.show()
+    }
+
+    private fun isSnackbarVisible(): Boolean {
+        if (snackbar == null) {
+            return false
+        }
+
+        return snackbar!!.isShownOrQueued
     }
 
     private fun dismissDialog(isDismissedByUser: Boolean) {

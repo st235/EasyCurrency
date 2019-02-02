@@ -2,7 +2,6 @@ package github.com.st235.easycurrency.data.net
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import github.com.st235.easycurrency.utils.TimeUtils
 
 typealias RatesMap = MutableMap<String, Double>
 

@@ -64,8 +64,9 @@ class MainActivity : BaseActivity(), MainView {
         presenter.attachView(this)
     }
 
-    override fun showRatesAreOutDateSnackbar(hoursDelta: Int) {
-        snackbarHelper.showSnackbar(hoursDelta)
+    override fun showRatesExpiredDialogIfNeeded(hoursDelta: Int,
+                                                isExpired: Boolean) {
+        snackbarHelper.showSnackbar(hoursDelta, isExpired)
     }
 
     override fun updateCurrenciesData(currencies: List<Currency>) {

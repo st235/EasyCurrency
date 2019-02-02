@@ -12,11 +12,8 @@ class MainPresenter(private val currenciesHolder: CurrencyListHolder): BasePrese
 
     private val currenciesChangeObserver: Observer<CurrenciesList>
             = { currencies: CurrenciesList ->
-        if (TimeUtils.isTimestampExpired(currencies.first)) {
-            val hoursLeftBehind = TimeUtils.getHours(currencies.first)
-            view?.showRatesAreOutDateSnackbar(hoursLeftBehind)
-        }
-
+        val hoursLeftBehind = TimeUtils.getHours(currencies.first)
+        view?.showRatesExpiredDialogIfNeeded(hoursLeftBehind, TimeUtils.isTimestampExpired(currencies.first))
         view?.updateCurrenciesData(currencies.second)
     }
 
