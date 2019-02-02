@@ -56,3 +56,8 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+
+# release and debug folders
+
+app/release/
+app/debug/
