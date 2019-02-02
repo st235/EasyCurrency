@@ -4,7 +4,7 @@ import androidx.annotation.WorkerThread
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
 import github.com.st235.easycurrency.utils.ObservableModel
 
-typealias CurrenciesList = List<Currency>
+typealias CurrenciesList = Pair<Long, List<Currency>>
 
 /**
  * Interface which presenter communicate with database or network
@@ -15,6 +15,9 @@ abstract class CurrencyListHolder: ObservableModel<CurrenciesList>() {
     companion object {
         const val TAG = "[CurrencyListHolder]"
     }
+
+    protected lateinit var baseCurrency: Currency
+    protected val currencies: MutableList<Currency> = mutableListOf()
 
     /**
      * Should be performed only from data sources and only
@@ -34,4 +37,8 @@ abstract class CurrencyListHolder: ObservableModel<CurrenciesList>() {
      * Note: Client should call this operation when interacts with data model
      */
     abstract fun onTypedNewValue(newBaseValue: Double)
+
+    protected fun getCurrencies(time: Long): CurrenciesList {
+        return time to currencies.map { i -> i }
+    }
 }

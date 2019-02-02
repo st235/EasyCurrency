@@ -11,10 +11,11 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 open class OnlineListHolder: CurrencyListHolder() {
-    protected lateinit var baseCurrency: Currency
-    protected val currencies: MutableList<Currency> = mutableListOf()
+    private var updateTimestamp: Long = 0L
 
     override fun onUpdateCurrencies(response: CurrencyRateResponse) {
+        updateTimestamp = response.unixTimestamp
+
         ThreadUtils.assertOnBackgroundThread()
         if (currencies.isEmpty()) {
             createCurrencies(response)
@@ -23,7 +24,7 @@ open class OnlineListHolder: CurrencyListHolder() {
         }
 
         GlobalScope.launch(context = Dispatchers.Main) {
-            notifyObservers(currencies.map { i -> i })
+            notifyObservers(getCurrencies(updateTimestamp))
         }
     }
 
@@ -39,7 +40,7 @@ open class OnlineListHolder: CurrencyListHolder() {
             baseCurrency.value = newBaseValue
             updateCurrenciesValues()
             withContext(context = Dispatchers.Main) {
-                notifyObservers(currencies.map { i -> i })
+                notifyObservers(getCurrencies(updateTimestamp))
             }
         }
     }

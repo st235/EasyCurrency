@@ -10,7 +10,7 @@ Easy way to convert currencies! 💶
 - [x] Currencies has been updated every 1 second
 - [x] Offline updates every 1 hour
 - [x] Night mode! 🌝
-- [ ] Sticky list header
+- [x] Offline notifications, if the rates are expired
 - [ ] Bug fixes & improvements
 
 ### Technologies
@@ -21,7 +21,7 @@ Easy way to convert currencies! 💶
 
 ### Screenshot
 
-<img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/daily_interface.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/night_interface.png" width="270" height="480">
+<img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/daily_interface.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/night_interface.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/offline_notifications.png" width="270" height="480">
 
 ### License
 

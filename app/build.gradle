@@ -12,12 +12,14 @@ android {
         applicationId "github.com.st235.easycurrency"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 18
-        versionName "0.7"
+        versionCode 24
+        versionName "0.8"
     }
 
     buildTypes {
         debug {
+            buildConfigField "long", "RATES_EXPIRES_HOURS", "0"
+
             buildConfigField "int", "DATABASE_VERSION", "1"
             buildConfigField "String", "DATABASE_NAME", "\"rates_debug.db\""
 
@@ -28,6 +30,8 @@ android {
         }
 
         release {
+            buildConfigField "long", "RATES_EXPIRES_HOURS", "2"
+
             buildConfigField "int", "DATABASE_VERSION", "1"
             buildConfigField "String", "DATABASE_NAME", "\"rates.db\""
 
@@ -48,6 +52,7 @@ dependencies {
     implementation libs.constraint
     implementation libs.recyclerview
     implementation libs.cardView
+    implementation libs.design
 
     implementation libs.koin
     implementation libs.koinAndroid

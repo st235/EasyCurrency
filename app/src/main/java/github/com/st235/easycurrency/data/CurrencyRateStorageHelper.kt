@@ -26,9 +26,9 @@ class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
         }
 
         val base = prefs.baseCurrency
-        val date = prefs.updateDate
+        val unixTimestamp = prefs.updateDate
 
-        return CurrencyRateResponse(base, date.toString(), rates)
+        return CurrencyRateResponse.createWithTimestamp(base, "", rates, unixTimestamp)
     }
 
     @WorkerThread
@@ -74,6 +74,6 @@ class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
     private fun writePrefs(ratesResponse: CurrencyRateResponse) {
         ThreadUtils.assertOnBackgroundThread()
         Timber.tag(TAG).d("Perform to update prefs")
-        prefs.updateDate = 0L
+        prefs.updateDate = ratesResponse.unixTimestamp
     }
 }

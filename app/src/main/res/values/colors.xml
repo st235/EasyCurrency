@@ -18,4 +18,6 @@
     <color name="colorWhite30">#4DFFFFFF</color>
 
     <color name="colorNightDark">#212326</color>
+
+    <color name="colorSnackbarAction">#ff80ab</color>
 </resources>

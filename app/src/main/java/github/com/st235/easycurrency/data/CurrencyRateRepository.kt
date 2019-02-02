@@ -54,7 +54,6 @@ class CurrencyRateRepository(private val inMemoryModel: CurrencyRateInMemoryMode
             } catch (exception: Exception) {
                 Timber.tag(TAG).e(exception, "There was exception in network")
                 response = inMemoryModel.getOrRead()
-                Timber.tag(TAG).v("Trying to obtain offline with: $inMemoryModel")
             } finally {
                 notifyObservers(response ?: return@launch)
             }

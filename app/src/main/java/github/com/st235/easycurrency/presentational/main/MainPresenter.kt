@@ -6,12 +6,18 @@ import github.com.st235.easycurrency.domain.CurrencyListHolder
 import github.com.st235.easycurrency.presentational.base.BasePresenter
 import github.com.st235.easycurrency.utils.CurrencyUtils
 import github.com.st235.easycurrency.utils.Observer
+import github.com.st235.easycurrency.utils.TimeUtils
 
 class MainPresenter(private val currenciesHolder: CurrencyListHolder): BasePresenter<MainView>() {
 
     private val currenciesChangeObserver: Observer<CurrenciesList>
             = { currencies: CurrenciesList ->
-        view?.updateCurrenciesData(currencies)
+        if (TimeUtils.isTimestampExpired(currencies.first)) {
+            val hoursLeftBehind = TimeUtils.getHours(currencies.first)
+            view?.showRatesAreOutDateSnackbar(hoursLeftBehind)
+        }
+
+        view?.updateCurrenciesData(currencies.second)
     }
 
     override fun onAttachView(v: MainView) {

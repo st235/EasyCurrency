@@ -1,6 +1,7 @@
 package github.com.st235.easycurrency.data.net
 
 import androidx.annotation.WorkerThread
+import github.com.st235.easycurrency.utils.TimeUtils
 import github.com.st235.easycurrency.utils.debug.ThreadUtils
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
@@ -39,6 +40,7 @@ class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
                     return
                 }
 
+                convertRates.unixTimestamp = TimeUtils.getTimestamp()
                 ratesDeferredRequest.complete(convertRates)
             }
 

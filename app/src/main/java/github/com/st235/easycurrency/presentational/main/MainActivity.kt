@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.presentational.base.BaseActivity
@@ -34,12 +35,14 @@ class MainActivity : BaseActivity(), MainView {
         currenciesRecyclerView.scrollToPosition(0)
     }
 
+    private lateinit var snackbarHelper: SnackbarHelper
     private lateinit var currenciesProgressBar: ProgressBar
     private lateinit var currenciesRecyclerView: RecyclerView
 
     override fun getLayout() = R.layout.activity_main
 
     override fun onInitViews() {
+        snackbarHelper = SnackbarHelper(this)
         currenciesRecyclerView = findViewById(R.id.currenciesList)
         currenciesProgressBar = findViewById(R.id.currenciesProgressBar)
 
@@ -59,6 +62,10 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun onViewsInitialized(savedInstanceState: Bundle?) {
         presenter.attachView(this)
+    }
+
+    override fun showRatesAreOutDateSnackbar(hoursDelta: Int) {
+        snackbarHelper.showSnackbar(hoursDelta)
     }
 
     override fun updateCurrenciesData(currencies: List<Currency>) {
