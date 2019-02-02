@@ -12,11 +12,12 @@ import timber.log.Timber
 class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
                                 private val prefs: CurrencyRatePrefs) {
     companion object {
-        private const val TAG = "[OperatingHelper]"
+        private const val TAG = "[RateStorageHelper]"
     }
 
     @WorkerThread
     fun read(): CurrencyRateResponse? {
+        Timber.tag(TAG).v("Reading values from storage")
         ThreadUtils.assertOnBackgroundThread()
 
         val rates = readDb()
@@ -46,6 +47,7 @@ class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
 
     @WorkerThread
     fun write(ratesResponse: CurrencyRateResponse) {
+        Timber.tag(TAG).v("Writing values to storage")
         ThreadUtils.assertOnBackgroundThread()
         writeToDb(ratesResponse)
         writePrefs(ratesResponse)

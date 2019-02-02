@@ -7,8 +7,7 @@ import github.com.st235.easycurrency.presentational.base.BasePresenter
 import github.com.st235.easycurrency.utils.CurrencyUtils
 import github.com.st235.easycurrency.utils.Observer
 
-class MainPresenter(
-    private val currenciesHolder: CurrencyListHolder): BasePresenter<MainView>() {
+class MainPresenter(private val currenciesHolder: CurrencyListHolder): BasePresenter<MainView>() {
 
     private val currenciesChangeObserver: Observer<CurrenciesList>
             = { currencies: CurrenciesList ->
@@ -21,13 +20,11 @@ class MainPresenter(
     }
 
     fun onTypeValue(newValue: Double, currency: Currency) {
-        currenciesHolder.recalculateCurrencies(
-                CurrencyUtils.calculateBaseValue(newValue, currency)
-        )
+        currenciesHolder.onTypedNewValue(CurrencyUtils.calculateBaseValue(newValue, currency))
     }
 
     fun onClickCurrency(newBaseCurrency: Currency) {
-        currenciesHolder.changeBaseCurrency(newBaseCurrency)
+        currenciesHolder.onChangeBaseCurrency(newBaseCurrency)
     }
 
     override fun onDetachView(v: MainView?) {

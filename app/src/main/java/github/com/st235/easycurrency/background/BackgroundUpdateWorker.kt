@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import github.com.st235.easycurrency.data.BASE_TO_BASE_CONVERT_RATIO
 import github.com.st235.easycurrency.data.CurrencyRateStorageHelper
 import github.com.st235.easycurrency.data.net.CurrencyRateApiWrapper
 import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
@@ -38,8 +39,9 @@ class BackgroundUpdateWorker(context: Context,
 
         runBlocking {
             try {
-                val rates = apiWrapper.getRates(prefs.baseCurrency).await()
-                storageHelper.write(rates)
+                val response = apiWrapper.getRates(prefs.baseCurrency).await()
+                response.rates[response.base] = BASE_TO_BASE_CONVERT_RATIO
+                storageHelper.write(response)
                 result = Result.success()
                 Timber.d("background task: update finished")
             } catch (throwable: Throwable) {

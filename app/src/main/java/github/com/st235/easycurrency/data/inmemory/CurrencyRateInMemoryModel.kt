@@ -37,4 +37,8 @@ class CurrencyRateInMemoryModel(private val storageHelper: CurrencyRateStorageHe
         val modelToFlush = inMemoryCurrencyRate ?: return
         storageHelper.write(modelToFlush)
     }
+
+    override fun toString(): String {
+        return "CurrencyRateInMemoryModel(inMemoryCurrencyRate=$inMemoryCurrencyRate)"
+    }
 }

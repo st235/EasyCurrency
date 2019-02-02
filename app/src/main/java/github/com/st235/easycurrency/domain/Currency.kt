@@ -4,9 +4,9 @@ class Currency(val id: String,
                val title: String,
                var isBase: Boolean = false) {
     companion object {
-        fun copyWithNewRate(currency: Currency, newRate: Double): Currency {
+        fun copy(currency: Currency, newRate: Double, newValue: Double): Currency {
             val newOne = Currency(currency)
-            newOne.value = currency.value
+            newOne.value = newValue
             newOne.rate = newRate
             return newOne
         }
