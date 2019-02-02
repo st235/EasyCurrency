@@ -11,14 +11,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 typealias CurrenciesList = List<Currency>
 
 class CurrencyListHolder(private val currencyRateRepository: CurrencyRateRepository):
     ObservableModel<CurrenciesList>() {
+    companion object {
+        private const val TAG = "[CurrencyListHolder]"
+    }
 
-    private var baseValue: Double = 1.0
-
+    private lateinit var baseCurrency: Currency
     private val currencies: MutableList<Currency> = mutableListOf()
 
     init {
@@ -34,7 +37,7 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
 
     @Synchronized
     private fun changeBaseCurrencyInternal(newCurrency: Currency) {
-        baseValue = newCurrency.value
+        baseCurrency = newCurrency
         currencyRateRepository.changeBaseCurrency(newCurrency.id)
 
         currencies[0].isBase = false
@@ -45,7 +48,7 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
     @MainThread
     fun recalculateCurrencies(newBaseValue: Double) {
         GlobalScope.launch {
-            baseValue = newBaseValue
+            baseCurrency.value = newBaseValue
             updateValues()
             withContext(context = Dispatchers.Main) {
                 notifyObservers(currencies.map { i -> i })
@@ -72,8 +75,13 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
     @WorkerThread
     private fun createList(response: CurrencyRateResponse) {
         for (entry in response.rates) {
-            val currencyForEntry = Currency(entry.key, CurrencyUtils.getCurrencyTitleBy(entry.key),
-                    entry.key == response.base)
+            val isBase = entry.key == response.base
+            val currencyForEntry = Currency(entry.key, CurrencyUtils.getCurrencyTitleBy(entry.key), isBase)
+
+            if (isBase) {
+                baseCurrency = currencyForEntry
+            }
+
             currencyForEntry.rate = entry.value
             currencies.add(currencyForEntry)
         }
@@ -83,6 +91,11 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
 
     @WorkerThread
     private fun updateList(response: CurrencyRateResponse) {
+        if (response.base != baseCurrency.id) {
+            Timber.tag(TAG).w("Update was dropped cause base currency is different")
+            return
+        }
+
         for (i in 0 until currencies.size) {
             val currency = currencies[i]
             currencies[i] = Currency.copyWithNewRate(currency, response.rates[currency.id]!!)
@@ -93,7 +106,7 @@ class CurrencyListHolder(private val currencyRateRepository: CurrencyRateReposit
     private fun updateValues() {
         for (i in 0 until currencies.size) {
             val currency = currencies[i]
-            currencies[i] = Currency.copyWithNewValue(currency, baseValue * currency.rate)
+            currencies[i] = Currency.copyWithNewValue(currency, baseCurrency.value * currency.rate)
         }
     }
 
