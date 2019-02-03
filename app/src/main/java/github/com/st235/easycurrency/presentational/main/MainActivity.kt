@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.presentational.base.BaseActivity
+import github.com.st235.easycurrency.utils.KeyboardHelper
 import github.com.st235.easycurrency.utils.SnackBarFactory
 import github.com.st235.easycurrency.utils.SnackBarHelper
 import github.com.st235.easycurrency.utils.events.CurrencyListScrollListener
@@ -37,6 +38,7 @@ class MainActivity : BaseActivity(), MainView {
         currenciesRecyclerView.scrollToPosition(0)
     }
 
+    private lateinit var keyboardHelper: KeyboardHelper
     private lateinit var snackBarHelper: SnackBarHelper
     private lateinit var currenciesProgressBar: ProgressBar
     private lateinit var currenciesRecyclerView: RecyclerView
@@ -44,6 +46,7 @@ class MainActivity : BaseActivity(), MainView {
     override fun getLayout() = R.layout.activity_main
 
     override fun onInitViews() {
+        keyboardHelper = KeyboardHelper(this)
         snackBarHelper = SnackBarHelper(this, snackBarFactory)
         currenciesRecyclerView = findViewById(R.id.currenciesList)
         currenciesProgressBar = findViewById(R.id.currenciesProgressBar)
@@ -53,11 +56,7 @@ class MainActivity : BaseActivity(), MainView {
         adapter.valueChangedListener = onItemValueChangedListener
 
         currenciesRecyclerView.setHasFixedSize(true)
-        currenciesRecyclerView.addOnScrollListener(
-            CurrencyListScrollListener(
-                adapter
-            )
-        )
+        currenciesRecyclerView.addOnScrollListener(CurrencyListScrollListener(keyboardHelper, adapter))
         currenciesRecyclerView.layoutManager = LinearLayoutManager(this)
         currenciesRecyclerView.adapter = adapter
     }
