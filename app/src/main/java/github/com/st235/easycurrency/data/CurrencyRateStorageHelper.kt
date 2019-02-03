@@ -9,6 +9,12 @@ import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
 import github.com.st235.easycurrency.utils.debug.ThreadUtils
 import timber.log.Timber
 
+/**
+ * Helps convert data from network models to
+ * database internal models and vice versa.
+ * Also, helps to read/write data
+ * from different sources to create entire model
+ */
 class CurrencyRateStorageHelper(private val database: CurrencyRateDatabase,
                                 private val prefs: CurrencyRatePrefs) {
     companion object {

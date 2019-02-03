@@ -5,6 +5,10 @@ import android.view.View
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 
+/**
+ * Helps to control snack bar appearance and disappearance
+ * including the management of states which info bars strictly prohibited
+ */
 class SnackBarHelper(activity: Activity,
                      private val snackBarFactory: SnackBarFactory) {
     private val rootView: View = activity.findViewById(android.R.id.content)
@@ -20,8 +24,14 @@ class SnackBarHelper(activity: Activity,
     private var isDismissedByUser = false
     private var lastKnownHoursDelta: Int = -1
 
-    fun show(hoursDelta: Int,
-             isExpired: Boolean) {
+    /**
+     * Show snack bar if it have been allowed to display
+     *
+     * @param hoursDelta - time since last update
+     * @param isExpired - flag, true if data is fresh and false otherwise
+     */
+    fun showDialogIfNeeded(hoursDelta: Int,
+                           isExpired: Boolean) {
         if (isDismissedByUser) {
             return
         }

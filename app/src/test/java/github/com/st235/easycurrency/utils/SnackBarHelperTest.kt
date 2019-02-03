@@ -33,7 +33,7 @@ class SnackBarHelperTest {
 
     @Test
     fun `checks snack bar should appears if data expired`() {
-        helper.show(TIME_EXPIRED, true)
+        helper.showDialogIfNeeded(TIME_EXPIRED, true)
         verify(snackBar).show()
     }
 
@@ -41,7 +41,7 @@ class SnackBarHelperTest {
     fun `checks snack bar should appears once if calls more then one time, but values still the same`() {
         showSnackbar(TIME_EXPIRED, true)
         for (i in 1..9) {
-            helper.show(TIME_EXPIRED, true)
+            helper.showDialogIfNeeded(TIME_EXPIRED, true)
         }
         verify(snackBar).show()
     }
@@ -64,7 +64,7 @@ class SnackBarHelperTest {
     fun `checks snack bar hides when there is new not outdated values`() {
         showSnackbar(TIME_EXPIRED, true)
         verify(snackBar).show()
-        helper.show(TIME_EXPIRED, false)
+        helper.showDialogIfNeeded(TIME_EXPIRED, false)
         verify(snackBar).dismiss()
     }
 
@@ -77,12 +77,12 @@ class SnackBarHelperTest {
         verify(snackBar).dismiss()
 
         for (i in 0..9) {
-            helper.show(TIME_EXPIRED, true)
+            helper.showDialogIfNeeded(TIME_EXPIRED, true)
         }
     }
 
     private fun showSnackbar(hoursDelta: Int, isExpired: Boolean) {
-        helper.show(hoursDelta, isExpired)
+        helper.showDialogIfNeeded(hoursDelta, isExpired)
         madeVisible(true)
     }
 

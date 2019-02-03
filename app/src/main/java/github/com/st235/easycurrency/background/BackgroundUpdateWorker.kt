@@ -14,6 +14,9 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import timber.log.Timber
 
+/**
+ * Background task to update currencies rates
+ */
 class BackgroundUpdateWorker(context: Context,
                              params: WorkerParameters):
     Worker(context, params), KoinComponent {

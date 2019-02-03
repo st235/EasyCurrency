@@ -10,6 +10,10 @@ import java.util.concurrent.TimeUnit
 private const val JOB_TAG = "currency_update.background"
 private const val JOB_REPEAT_INTERVAL_IN_MINUTES = 60L
 
+/**
+ * Creates background tasks,
+ * and cancel planned ones of it needed
+ */
 object BackgroundFactory {
     @MainThread
     fun enqueueJob() {

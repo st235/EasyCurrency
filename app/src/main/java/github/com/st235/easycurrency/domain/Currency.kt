@@ -1,5 +1,11 @@
 package github.com.st235.easycurrency.domain
 
+/**
+ * Internal currency model, contains
+ * id (ISO 4217 code), title (in local language)
+ * current value, convert rate
+ * and info about base value
+ */
 class Currency(val id: String,
                val title: String,
                var isBase: Boolean = false) {

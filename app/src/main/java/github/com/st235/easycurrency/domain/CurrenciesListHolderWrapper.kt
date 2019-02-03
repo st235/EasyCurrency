@@ -10,6 +10,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+/**
+ * Holds currencies list and switches between
+ * offline and online strategies when its needed
+ */
 class CurrenciesListHolderWrapper(private val currencyRateRepository: CurrencyRateRepository,
                                   private val networkStateDispatcher: NetworkStateDispatcher,
                                   applicationLifecycle: Lifecycle): CurrencyListHolder(), LifecycleObserver {

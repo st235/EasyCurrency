@@ -1,18 +1,15 @@
 package github.com.st235.easycurrency.presentational.base
 
 import android.os.Bundle
-import android.view.WindowManager
-import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 
-
+/**
+ * Base parent for all activities at the screen
+ */
 abstract class BaseActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
         onBeforeInit()
 
         super.onCreate(savedInstanceState)
@@ -42,10 +39,4 @@ abstract class BaseActivity: AppCompatActivity() {
      * @param savedInstanceState state
      */
     protected open fun onViewsInitialized(savedInstanceState: Bundle?) {}
-
-    protected fun setToolbar(@IdRes toolbarId: Int, isHomeEnabled: Boolean) {
-        val toolbar = findViewById<Toolbar>(toolbarId)
-        setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(isHomeEnabled)
-    }
 }

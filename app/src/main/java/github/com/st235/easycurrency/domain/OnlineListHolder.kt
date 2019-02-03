@@ -10,6 +10,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
+/**
+ * Online strategy to maintain currencies list
+ */
 open class OnlineListHolder: CurrencyListHolder() {
     private var updateTimestamp: Long = 0L
 

@@ -6,6 +6,11 @@ import github.com.st235.easycurrency.data.net.CurrencyRateResponse
 import github.com.st235.easycurrency.utils.debug.ThreadUtils
 import timber.log.Timber
 
+/**
+ * In memory model, which updates current
+ * currencies model without writing it to
+ * database per every request.
+ */
 class CurrencyRateInMemoryModel(private val storageHelper: CurrencyRateStorageHelper) {
     companion object {
         private const val TAG = "[InMemoryModel]"

@@ -1,9 +1,11 @@
 package github.com.st235.easycurrency.presentational.main
 
+import androidx.annotation.WorkerThread
 import androidx.recyclerview.widget.DiffUtil
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.utils.CurrencyUtils
 
+@WorkerThread
 class CurrencyDiffUtilsCallback(
         private val oldCurrenciesList: List<Currency>,
         private val newCurrenciesList: List<Currency>

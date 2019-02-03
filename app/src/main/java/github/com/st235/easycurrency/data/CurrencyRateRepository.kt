@@ -16,6 +16,11 @@ import timber.log.Timber
 
 const val BASE_TO_BASE_CONVERT_RATIO = 1.0
 
+/**
+ * Facade to all data sources
+ * Needs to create simple interaction interface between
+ * data and presentation layers
+ */
 class CurrencyRateRepository(private val inMemoryModel: CurrencyRateInMemoryModel,
                              private val apiWrapper: CurrencyRateApiWrapper,
                              private val prefs: CurrencyRatePrefs,

@@ -12,12 +12,15 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.utils.CurrencyUtils
 import github.com.st235.easycurrency.utils.extensions.toPx
 
+/**
+ * Input field which contains hint field with
+ * currency sign label
+ */
 class CurrencyEditText @JvmOverloads constructor(
         context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
     : LinearLayout(context, attrs, defStyleAttr) {

@@ -2,10 +2,16 @@ package github.com.st235.easycurrency.utils.events
 
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * Interface for all the objects that can be scrolled
+ */
 interface ScrollableAdapter {
     var isScrolling: Boolean
 }
 
+/**
+ * The entity that monitors the state of the scroll
+ */
 class CurrencyListScrollListener(private val adapter: ScrollableAdapter,
                                  private val threshold: Int = 0):
         RecyclerView.OnScrollListener() {

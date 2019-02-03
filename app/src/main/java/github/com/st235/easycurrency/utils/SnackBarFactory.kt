@@ -8,12 +8,25 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import github.com.st235.easycurrency.R
 
+/**
+ * Hides the mechanisms of snackBar creation
+ * Needs to create any infobars
+ */
 class SnackBarFactory(context: Context) {
     @ColorInt
     private val actionColor: Int = ContextCompat.getColor(context, R.color.colorSnackbarAction)
 
     private val resources = context.resources
 
+    /**
+     * Snackbar for situation, when your rates probably may be expired
+     * For example, if rates were updated offline
+     *
+     * @param rootView - place, where snack bar should be attached
+     * @param hoursDelta - time since last update
+     * @param dismissCallback - calls when user dismissed snack bar
+     * @param actionCallback - calls when user click at action button
+     */
     fun createRatesExpiresSnackBar(rootView: View, hoursDelta: Int,
                                    dismissCallback: BaseTransientBottomBar.BaseCallback<Snackbar>,
                                    actionCallback: (v: View) -> Unit): Snackbar {

@@ -5,6 +5,11 @@ import github.com.st235.easycurrency.utils.CurrencyUtils
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * Offline strategy to maintain currencies,
+ * because we have not abile to switch base currency rates,
+ * cause we have not internet connection
+ */
 class OfflineListHolder: OnlineListHolder() {
     override fun onChangeBaseCurrency(newCurrency: Currency) {
         GlobalScope.launch {

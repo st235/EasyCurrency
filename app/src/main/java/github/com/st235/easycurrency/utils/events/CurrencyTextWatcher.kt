@@ -8,6 +8,11 @@ import java.text.NumberFormat
 import java.text.ParseException
 import java.util.*
 
+/**
+ * Watch the input text changed
+ * and helps to parse it to double
+ * remembering about local separators signs
+ */
 abstract class CurrencyTextWatcher: TextWatcher {
     companion object {
         private const val TAG = "[CurrencyTextWatcher]"
@@ -47,7 +52,7 @@ abstract class CurrencyTextWatcher: TextWatcher {
         }
 
         var i = 0
-        var isOnce = false
+        var haveSpecialSeparator = false
 
         while (i < text.length) {
             val character = text[i]
@@ -57,8 +62,8 @@ abstract class CurrencyTextWatcher: TextWatcher {
                 continue
             }
 
-            if (!isOnce) {
-                isOnce = true
+            if (!haveSpecialSeparator) {
+                haveSpecialSeparator = true
                 i++
                 continue
             }

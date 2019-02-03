@@ -7,7 +7,17 @@ import androidx.annotation.WorkerThread
 import github.com.st235.easycurrency.BuildConfig
 import timber.log.Timber
 
+/**
+ * Helps with thread detection and possible
+ * long operation prevention on main and background thread
+ * Not fires in production code, but still fires in debug
+ */
 object ThreadUtils {
+    /**
+     * Checks that operation should be performed on main thread
+     *
+     * @throws IllegalStateException if current thread is not main
+     */
     @MainThread
     fun assertOnMainThread() {
         assertThat(
@@ -17,6 +27,11 @@ object ThreadUtils {
         Timber.v("Thread name: ${Thread.currentThread().name}")
     }
 
+    /**
+     * Checks that operation should be performed on background thread
+     *
+     * @throws IllegalStateException if current thread is not background
+     */
     @WorkerThread
     fun assertOnBackgroundThread() {
         assertThat(

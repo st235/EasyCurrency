@@ -15,6 +15,12 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import timber.log.Timber
 
+/**
+ * Dispatches current network state and fires if
+ * state has been changed
+ * Hides all version-dependent logic
+ * between new and old Android
+ */
 class NetworkStateDispatcher(private val context: Context,
                              applicationLifecycle: Lifecycle): LifecycleObserver {
     companion object {
@@ -33,6 +39,9 @@ class NetworkStateDispatcher(private val context: Context,
         applicationLifecycle.addObserver(this)
     }
 
+    /**
+     * Starts listen network state from system
+     */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun registerNetworkCallback() {
         Timber.tag(TAG).v("Register network callbacks")
@@ -75,6 +84,9 @@ class NetworkStateDispatcher(private val context: Context,
             networkCallback as ConnectivityManager.NetworkCallback)
     }
 
+    /**
+     * Stops listen network state from system
+     */
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun unregisterNetworkCallback() {
         Timber.tag(TAG).v("Unregister network callbacks")
@@ -96,14 +108,24 @@ class NetworkStateDispatcher(private val context: Context,
         connectivityManager.unregisterNetworkCallback(networkCallback as ConnectivityManager.NetworkCallback)
     }
 
+    /**
+     * Adds observer to listen network state changes
+     */
     fun addObserver(observer: Observer<Boolean>) {
         observerModel.addObserver(observer)
     }
 
+    /**
+     * Removes observer from network state changes listening
+     */
     fun removeObserver(observer: Observer<Boolean>) {
         observerModel.removeObserver(observer)
     }
 
+    /**
+     * Checks if device is online or not
+     * Online means connected by wifi or cellular
+     */
     fun isOnline(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return isOnlineForM()
