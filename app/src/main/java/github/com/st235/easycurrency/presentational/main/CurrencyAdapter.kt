@@ -22,11 +22,11 @@ import timber.log.Timber
 
 typealias OnScrollToTopListener = () -> Unit
 
-class CurrenciesAdapter
-    : RecyclerView.Adapter<CurrenciesAdapter.CurrenciesViewHolder>(),
+class CurrencyAdapter
+    : RecyclerView.Adapter<CurrencyAdapter.CurrenciesViewHolder>(),
     ScrollableAdapter {
     private companion object {
-        private const val TAG = "[CurrenciesAdapter]"
+        private const val TAG = "[CurrencyAdapter]"
 
         private const val NO_POSITION = -1
 
@@ -109,7 +109,7 @@ class CurrenciesAdapter
             val diffUtilsCallback = CurrencyDiffUtilsCallback(currencies, newCurrencies)
             val diffUtilsResult = DiffUtil.calculateDiff(diffUtilsCallback, true)
             withContext(Dispatchers.Main) {
-                diffUtilsResult.dispatchUpdatesTo(this@CurrenciesAdapter)
+                diffUtilsResult.dispatchUpdatesTo(this@CurrencyAdapter)
                 currencies = newCurrencies
                 if (needToBeScrolled) {
                     needToBeScrolled = false

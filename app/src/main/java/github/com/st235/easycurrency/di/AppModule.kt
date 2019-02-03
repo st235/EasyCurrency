@@ -13,9 +13,10 @@ import github.com.st235.easycurrency.data.net.RetrofitFactory
 import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
 import github.com.st235.easycurrency.domain.CurrenciesListHolderWrapper
 import github.com.st235.easycurrency.domain.CurrencyListHolder
-import github.com.st235.easycurrency.presentational.main.CurrenciesAdapter
+import github.com.st235.easycurrency.presentational.main.CurrencyAdapter
 import github.com.st235.easycurrency.presentational.main.MainPresenter
 import github.com.st235.easycurrency.utils.NetworkStateDispatcher
+import github.com.st235.easycurrency.utils.SnackBarFactory
 import github.com.st235.easycurrency.utils.UpdateTimer
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
@@ -50,6 +51,7 @@ private val mainModule = module {
     single { UpdateTimer() }
     single { NetworkStateDispatcher(androidContext(), get()) }
     single { ProcessLifecycleOwner.get().lifecycle }
+    single { SnackBarFactory(androidContext()) }
 
     /**
      * domain stage
@@ -60,7 +62,7 @@ private val mainModule = module {
      * presentation stage
      */
     single { MainPresenter(get()) }
-    single { CurrenciesAdapter() }
+    single { CurrencyAdapter() }
 }
 
 val appModules = listOf(mainModule)

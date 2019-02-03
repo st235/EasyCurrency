@@ -13,7 +13,7 @@ class OfflineListHolder: OnlineListHolder() {
     }
 
     /**
-     * We should not update real [], because we have not
+     * We should not update real [baseCurrency], because we have not
      * another one mapping for that, so we should use existing one
      */
     @Synchronized

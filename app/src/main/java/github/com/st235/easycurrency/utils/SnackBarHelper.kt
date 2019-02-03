@@ -1,4 +1,4 @@
-package github.com.st235.easycurrency.presentational.main
+package github.com.st235.easycurrency.utils
 
 import android.app.Activity
 import android.view.View
@@ -8,9 +8,9 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import github.com.st235.easycurrency.R
 
-class SnackbarHelper(private val activity: Activity) {
+class SnackBarHelper(activity: Activity,
+                     private val snackBarFactory: SnackBarFactory) {
     private val rootView: View = activity.findViewById(android.R.id.content)
-    @ColorInt private val actionColor: Int = ContextCompat.getColor(activity, R.color.colorSnackbarAction)
     private val snackbarCallback = object: BaseTransientBottomBar.BaseCallback<Snackbar>() {
         override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
             snackbar?.removeCallback(this)
@@ -23,22 +23,22 @@ class SnackbarHelper(private val activity: Activity) {
     private var isDismissedByUser = false
     private var lastUpdatedTime: Int = -1
 
-    fun showSnackbar(hoursDelta: Int,
-                     isExpired: Boolean) {
+    fun show(hoursDelta: Int,
+             isExpired: Boolean) {
         if (isDismissedByUser) {
             return
         }
 
-        if (!isSnackbarVisible() && !isExpired) {
+        if (!isVisible() && !isExpired) {
             return
         }
 
-        if (isSnackbarVisible() && !isExpired) {
+        if (isVisible() && !isExpired) {
             dismissDialog(false)
             return
         }
 
-        if (isSnackbarVisible()) {
+        if (isVisible()) {
             if (hoursDelta != lastUpdatedTime) {
                 dismissDialog(false)
                 lastUpdatedTime = hoursDelta
@@ -47,21 +47,15 @@ class SnackbarHelper(private val activity: Activity) {
             }
         }
 
-        val hoursText = activity.resources.getQuantityString(R.plurals.all_rates_are_outdated_hours,
-            hoursDelta, hoursDelta)
-        val text = activity.getString(R.string.all_rates_are_outdated, hoursText)
-        snackbar = Snackbar.make(rootView, text, Snackbar.LENGTH_INDEFINITE)
-        snackbar!!.setActionTextColor(actionColor)
-        snackbar!!.setAction(R.string.all_rates_are_outdated_dismiss) {
+        lastUpdatedTime = hoursDelta
+        snackbar = snackBarFactory.createRatesExpiresSnackBar(rootView, hoursDelta, snackbarCallback) {
             dismissDialog(true)
         }
-
-        snackbar!!.addCallback(snackbarCallback)
 
         snackbar!!.show()
     }
 
-    private fun isSnackbarVisible(): Boolean {
+    private fun isVisible(): Boolean {
         if (snackbar == null) {
             return false
         }

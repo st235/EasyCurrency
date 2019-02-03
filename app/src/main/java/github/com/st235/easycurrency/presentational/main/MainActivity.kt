@@ -5,10 +5,11 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.presentational.base.BaseActivity
+import github.com.st235.easycurrency.utils.SnackBarFactory
+import github.com.st235.easycurrency.utils.SnackBarHelper
 import github.com.st235.easycurrency.utils.events.CurrencyListScrollListener
 import github.com.st235.easycurrency.utils.events.OnItemClickListener
 import github.com.st235.easycurrency.utils.events.OnItemValueChangedListener
@@ -16,7 +17,8 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity(), MainView {
     private val presenter: MainPresenter by inject()
-    private val adapter: CurrenciesAdapter by inject()
+    private val adapter: CurrencyAdapter by inject()
+    private val snackBarFactory: SnackBarFactory by inject()
 
     private val onItemValueChangedListener = object:
         OnItemValueChangedListener<Double, Currency> {
@@ -35,14 +37,14 @@ class MainActivity : BaseActivity(), MainView {
         currenciesRecyclerView.scrollToPosition(0)
     }
 
-    private lateinit var snackbarHelper: SnackbarHelper
+    private lateinit var snackBarHelper: SnackBarHelper
     private lateinit var currenciesProgressBar: ProgressBar
     private lateinit var currenciesRecyclerView: RecyclerView
 
     override fun getLayout() = R.layout.activity_main
 
     override fun onInitViews() {
-        snackbarHelper = SnackbarHelper(this)
+        snackBarHelper = SnackBarHelper(this, snackBarFactory)
         currenciesRecyclerView = findViewById(R.id.currenciesList)
         currenciesProgressBar = findViewById(R.id.currenciesProgressBar)
 
@@ -66,7 +68,7 @@ class MainActivity : BaseActivity(), MainView {
 
     override fun showRatesExpiredDialogIfNeeded(hoursDelta: Int,
                                                 isExpired: Boolean) {
-        snackbarHelper.showSnackbar(hoursDelta, isExpired)
+        snackBarHelper.show(hoursDelta, isExpired)
     }
 
     override fun updateCurrenciesData(currencies: List<Currency>) {
