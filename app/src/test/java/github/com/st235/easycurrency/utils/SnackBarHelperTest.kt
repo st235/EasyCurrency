@@ -1,11 +1,9 @@
-package github.com.st235.easycurrency.presentational.main
+package github.com.st235.easycurrency.utils
 
 import android.app.Activity
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.nhaarman.mockitokotlin2.*
-import github.com.st235.easycurrency.utils.SnackBarFactory
-import github.com.st235.easycurrency.utils.SnackBarHelper
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner

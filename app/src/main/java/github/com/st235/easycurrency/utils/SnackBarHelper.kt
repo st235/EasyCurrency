@@ -2,26 +2,23 @@ package github.com.st235.easycurrency.utils
 
 import android.app.Activity
 import android.view.View
-import androidx.annotation.ColorInt
-import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
-import github.com.st235.easycurrency.R
 
 class SnackBarHelper(activity: Activity,
                      private val snackBarFactory: SnackBarFactory) {
     private val rootView: View = activity.findViewById(android.R.id.content)
-    private val snackbarCallback = object: BaseTransientBottomBar.BaseCallback<Snackbar>() {
+    private val snackBarCallback = object: BaseTransientBottomBar.BaseCallback<Snackbar>() {
         override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-            snackbar?.removeCallback(this)
-            snackbar = null
+            snackBar?.removeCallback(this)
+            snackBar = null
         }
     }
 
-    private var snackbar: Snackbar? = null
+    private var snackBar: Snackbar? = null
 
     private var isDismissedByUser = false
-    private var lastUpdatedTime: Int = -1
+    private var lastKnownHoursDelta: Int = -1
 
     fun show(hoursDelta: Int,
              isExpired: Boolean) {
@@ -29,44 +26,50 @@ class SnackBarHelper(activity: Activity,
             return
         }
 
-        if (!isVisible() && !isExpired) {
+        val notVisibleAndHaveFreshData = !isVisible() && !isExpired
+        val visibleAndHaveFreshData = isVisible() && !isExpired
+        val visibleAndHaveExpiredData = isVisible() && isExpired
+
+        val isDataTheSame = hoursDelta == lastKnownHoursDelta
+
+        if (notVisibleAndHaveFreshData ||
+            (visibleAndHaveExpiredData && isDataTheSame)) {
             return
         }
 
-        if (isVisible() && !isExpired) {
+        if (visibleAndHaveFreshData) {
             dismissDialog(false)
             return
         }
 
-        if (isVisible()) {
-            if (hoursDelta != lastUpdatedTime) {
-                dismissDialog(false)
-                lastUpdatedTime = hoursDelta
-            } else {
-                return
-            }
+        if (visibleAndHaveExpiredData && !isDataTheSame) {
+            dismissDialog(false)
         }
 
-        lastUpdatedTime = hoursDelta
-        snackbar = snackBarFactory.createRatesExpiresSnackBar(rootView, hoursDelta, snackbarCallback) {
+        showDialog(hoursDelta)
+    }
+
+    private fun showDialog(hoursDelta: Int) {
+        snackBar = snackBarFactory.createRatesExpiresSnackBar(rootView, hoursDelta, snackBarCallback) {
             dismissDialog(true)
         }
 
-        snackbar!!.show()
+        lastKnownHoursDelta = hoursDelta
+        snackBar!!.show()
     }
 
     private fun isVisible(): Boolean {
-        if (snackbar == null) {
+        if (snackBar == null) {
             return false
         }
 
-        return snackbar!!.isShownOrQueued
+        return snackBar!!.isShownOrQueued
     }
 
     private fun dismissDialog(isDismissedByUser: Boolean) {
         this.isDismissedByUser = isDismissedByUser
-        snackbar?.removeCallback(snackbarCallback)
-        snackbar?.dismiss()
-        snackbar = null
+        snackBar?.removeCallback(snackBarCallback)
+        snackBar?.dismiss()
+        snackBar = null
     }
 }
