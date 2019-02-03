@@ -11,10 +11,11 @@ Easy way to convert currencies! 💶
 - [x] Offline updates every 1 hour
 - [x] Night mode! 🌝
 - [x] Offline notifications, if the rates are expired
-- [ ] Bug fixes & improvements
+- [ ] Bug fixes & improvements (To infinity... and beyond 🚀)
 
 ### Technologies
 - Kotlin + Coroutines
+- Lifecycle
 - Koin
 - Room + WorkManager (for offline mode)
 - Retrofit
@@ -22,6 +23,12 @@ Easy way to convert currencies! 💶
 ### Screenshot
 
 <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/daily_interface.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/night_interface.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/offline_notifications.png" width="270" height="480">
+
+### Download
+
+Latest release version: *1.0*
+
+You can download the latest release from the [release page](https://github.com/st235/EasyCurrency/releases) or by [direct link](https://github.com/st235/EasyCurrency/releases/tag/1.0).
 
 ### License
 
