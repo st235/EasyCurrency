@@ -7,7 +7,7 @@ Easy way to convert currencies! 💶
 ### Features
 
 - [x] Support around 40 currencies
-- [x] Currencies has been updated every 1 second
+- [x] Currencies has been updated every 5 minutes while in usage & every 60 minutes in the background
 - [x] Offline updates every 1 hour
 - [x] Night mode! 🌝
 - [x] Offline notifications, if the rates are expired
@@ -20,13 +20,15 @@ Easy way to convert currencies! 💶
 - Room + WorkManager (for offline mode)
 - Retrofit
 
+Used currencies rates api is [exchangeratesapi.io](https://exchangeratesapi.io)
+
 ### Screenshot
 
 <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/daily_interface.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/night_interface.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/st235/EasyCurrency/master/images/offline_notifications.png" width="270" height="480">
 
 ### Download
 
-Latest release version: *1.0*
+Latest release version: **1.0**
 
 You can download the latest release from the [release page](https://github.com/st235/EasyCurrency/releases) or by [direct link](https://github.com/st235/EasyCurrency/releases/tag/1.0).
 
