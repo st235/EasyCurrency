@@ -25,7 +25,7 @@ private val mainModule = module {
     /**
      * net stage
      */
-    single { RetrofitFactory.createApiWrapper<CurrencyRateApi>(BuildConfig.REVOLUT_BASE_URL) }
+    single { RetrofitFactory.createApiWrapper<CurrencyRateApi>(BuildConfig.CURRENCIES_RATES_BASE_URL) }
     single { CurrencyRateApiWrapper(get()) }
 
     /**

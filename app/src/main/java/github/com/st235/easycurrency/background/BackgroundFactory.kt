@@ -5,10 +5,10 @@ import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
+import github.com.st235.easycurrency.BuildConfig
 import java.util.concurrent.TimeUnit
 
 private const val JOB_TAG = "currency_update.background"
-private const val JOB_REPEAT_INTERVAL_IN_MINUTES = 60L
 
 /**
  * Creates background tasks,
@@ -24,7 +24,8 @@ object BackgroundFactory {
             .build()
 
         val recurringWork = PeriodicWorkRequest
-            .Builder(BackgroundUpdateWorker::class.java, JOB_REPEAT_INTERVAL_IN_MINUTES, TimeUnit.MINUTES)
+            .Builder(BackgroundUpdateWorker::class.java,
+                BuildConfig.BACKGROUND_UPDATE_TIME_IN_MINUTES, TimeUnit.MINUTES)
             .setConstraints(constraints)
             .addTag(JOB_TAG)
             .build()

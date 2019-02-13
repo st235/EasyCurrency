@@ -1,9 +1,8 @@
 package github.com.st235.easycurrency.utils
 
+import github.com.st235.easycurrency.BuildConfig
 import java.util.*
 import java.util.concurrent.TimeUnit
-
-private const val TIME_VALUE_IN_SECONDS = 1L
 
 typealias UpdateCallback = () -> Unit
 
@@ -24,7 +23,8 @@ class UpdateTimer {
     var updateCallback: UpdateCallback? = null
 
     init {
-        timer.schedule(timerTask, 0, TimeUnit.SECONDS.toMillis(TIME_VALUE_IN_SECONDS))
+        timer.schedule(timerTask,
+            0, TimeUnit.MINUTES.toMillis(BuildConfig.FOREGROUND_UPDATE_TIME_IN_MINUTES))
     }
 
     /**

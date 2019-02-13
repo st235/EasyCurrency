@@ -14,28 +14,40 @@ android {
         targetSdkVersion 28
         versionCode 25
         versionName "1.0"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
     }
 
     buildTypes {
         debug {
+            buildConfigField "long", "BACKGROUND_UPDATE_TIME_IN_MINUTES", "60"
+            buildConfigField "long", "FOREGROUND_UPDATE_TIME_IN_MINUTES", "5"
+
             buildConfigField "long", "RATES_EXPIRES_HOURS", "1"
 
             buildConfigField "int", "DATABASE_VERSION", "1"
             buildConfigField "String", "DATABASE_NAME", "\"rates_debug.db\""
 
-            buildConfigField "String", "REVOLUT_BASE_URL", "\"https://revolut.duckdns.org\""
+            buildConfigField "String", "CURRENCIES_RATES_BASE_URL", "\"https://api.exchangeratesapi.io\""
 
             minifyEnabled false
             versionNameSuffix '-debug'
         }
 
         release {
+            buildConfigField "long", "BACKGROUND_UPDATE_TIME_IN_MINUTES", "60"
+            buildConfigField "long", "FOREGROUND_UPDATE_TIME_IN_MINUTES", "5"
+
             buildConfigField "long", "RATES_EXPIRES_HOURS", "2"
 
             buildConfigField "int", "DATABASE_VERSION", "1"
             buildConfigField "String", "DATABASE_NAME", "\"rates.db\""
 
-            buildConfigField "String", "REVOLUT_BASE_URL", "\"https://revolut.duckdns.org\""
+            buildConfigField "String", "CURRENCIES_RATES_BASE_URL", "\"https://api.exchangeratesapi.io\""
 
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

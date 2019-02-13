@@ -9,6 +9,7 @@ import github.com.st235.easycurrency.data.net.CurrencyRateApiWrapper
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
 import github.com.st235.easycurrency.data.prefs.CurrencyRatePrefs
 import github.com.st235.easycurrency.utils.ObservableModel
+import github.com.st235.easycurrency.utils.Observer
 import github.com.st235.easycurrency.utils.UpdateTimer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -39,6 +40,14 @@ class CurrencyRateRepository(private val inMemoryModel: CurrencyRateInMemoryMode
     fun startUpdating() {
         Timber.tag(TAG).v("Start updating")
         updateTimer.updateCallback = this::update
+    }
+
+    override fun addObserver(observer: Observer<CurrencyRateResponse>) {
+        super.addObserver(observer)
+        GlobalScope.launch {
+            val response = inMemoryModel.getOrRead()
+            observer(response ?: return@launch)
+        }
     }
 
     @MainThread
