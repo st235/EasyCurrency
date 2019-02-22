@@ -28,9 +28,9 @@ Used currencies rates api is [exchangeratesapi.io](https://exchangeratesapi.io)
 
 ### Download
 
-Latest release version: **1.0**
+Latest release version: **1.0.1**
 
-You can download the latest release from the [release page](https://github.com/st235/EasyCurrency/releases) or by [direct link](https://github.com/st235/EasyCurrency/releases/tag/1.0).
+You can download the latest release from the [release page](https://github.com/st235/EasyCurrency/releases) or by [direct link](https://github.com/st235/EasyCurrency/releases/tag/1.0.1).
 
 ### License
 

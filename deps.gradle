@@ -11,7 +11,7 @@ ext.versions = [
         retrofit          : '2.4.0',
         room              : '1.1.0',
 
-        stetho .          : '1.5.0',
+        stetho            : '1.5.0',
         timber            : '4.7.1',
 
         junit             : '4.12',
