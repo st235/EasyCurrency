@@ -20,7 +20,7 @@ Easy way to convert currencies! 💶
 - Room + WorkManager (for offline mode)
 - Retrofit
 
-Used currencies rates api is [exchangeratesapi.io](https://exchangeratesapi.io)
+Used currencies api is [Easy Currency API](https://github.com/st235/EasyCurrency.API) and rates [published by the European Central Bank](https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html).
 
 ### Screenshot
 
