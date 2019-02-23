@@ -4,6 +4,7 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import github.com.st235.easycurrency.BuildConfig
 import github.com.st235.easycurrency.data.inmemory.CurrencyRateInMemoryModel
 import github.com.st235.easycurrency.data.net.CurrencyRateApiWrapper
 import github.com.st235.easycurrency.data.net.CurrencyRateResponse
@@ -62,7 +63,8 @@ class CurrencyRateRepository(private val inMemoryModel: CurrencyRateInMemoryMode
         GlobalScope.launch {
             var response: CurrencyRateResponse? = null
             try {
-                response = apiWrapper.getRates(prefs.baseCurrency).await()
+                val appId = BuildConfig.CURRENCIES_RATES_APP_ID
+                response = apiWrapper.getRates(appId, prefs.baseCurrency).await()
                 response.rates[response.base] = BASE_TO_BASE_CONVERT_RATIO
                 inMemoryModel.update(response)
             } catch (exception: Exception) {

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.WorkerThread
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import github.com.st235.easycurrency.BuildConfig
 import github.com.st235.easycurrency.data.BASE_TO_BASE_CONVERT_RATIO
 import github.com.st235.easycurrency.data.CurrencyRateStorageHelper
 import github.com.st235.easycurrency.data.net.CurrencyRateApiWrapper
@@ -42,7 +43,8 @@ class BackgroundUpdateWorker(context: Context,
 
         runBlocking {
             try {
-                val response = apiWrapper.getRates(prefs.baseCurrency).await()
+                val appId = BuildConfig.CURRENCIES_RATES_APP_ID
+                val response = apiWrapper.getRates(appId, prefs.baseCurrency).await()
                 response.rates[response.base] = BASE_TO_BASE_CONVERT_RATIO
                 storageHelper.write(response)
                 result = Result.success()

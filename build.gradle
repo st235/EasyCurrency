@@ -1,4 +1,5 @@
 apply from: './deps.gradle'
+apply from: './utils.gradle'
 
 buildscript {
     repositories {

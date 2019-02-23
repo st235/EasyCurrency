@@ -20,12 +20,12 @@ class CurrencyRateApiWrapper(private val currencyRateApi: CurrencyRateApi) {
     fun isInUsage() = currentCall != null && currentCall!!.isExecuted
 
     @WorkerThread
-    fun getRates(baseCurrency: String): Deferred<CurrencyRateResponse> {
+    fun getRates(appId: String, baseCurrency: String): Deferred<CurrencyRateResponse> {
         ThreadUtils.assertOnBackgroundThread()
 
         val ratesDeferredRequest = CompletableDeferred<CurrencyRateResponse>()
 
-        currentCall = currencyRateApi.getCurrenciesConvertRate(baseCurrency)
+        currentCall = currencyRateApi.getCurrenciesConvertRate(appId, baseCurrency)
         currentCall?.enqueue(object : Callback<CurrencyRateResponse> {
             override fun onResponse(call: Call<CurrencyRateResponse>,
                                     response: Response<CurrencyRateResponse>) {

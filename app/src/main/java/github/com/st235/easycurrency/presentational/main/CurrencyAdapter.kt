@@ -51,7 +51,7 @@ class CurrencyAdapter
         private val currencyTitle: TextView = itemView.findViewById(R.id.currencyTitle)
         private val currencyAvatar: TextView = itemView.findViewById(R.id.currencyAvatar)
 
-        private val onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+        private val onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             val adapterPosition = adapterPosition
             if (hasFocus) {
                 currentlyFocusedItem = adapterPosition
