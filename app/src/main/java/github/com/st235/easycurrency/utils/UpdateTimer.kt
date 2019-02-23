@@ -20,11 +20,19 @@ class UpdateTimer {
     /**
      * Callback which would be fires every time period
      */
-    var updateCallback: UpdateCallback? = null
+    private var updateCallback: UpdateCallback? = null
 
     init {
         timer.schedule(timerTask,
             0, TimeUnit.MINUTES.toMillis(BuildConfig.FOREGROUND_UPDATE_TIME_IN_MINUTES))
+    }
+
+    /**
+     * Add callback to timer updates
+     */
+    fun addCallback(callback: UpdateCallback) {
+        updateCallback = callback
+        callback()
     }
 
     /**

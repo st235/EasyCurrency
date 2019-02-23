@@ -40,7 +40,7 @@ class CurrencyRateRepository(private val inMemoryModel: CurrencyRateInMemoryMode
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun startUpdating() {
         Timber.tag(TAG).v("Start updating")
-        updateTimer.updateCallback = this::update
+        updateTimer.addCallback(this::update)
     }
 
     override fun addObserver(observer: Observer<CurrencyRateResponse>) {
