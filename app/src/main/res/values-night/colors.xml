@@ -9,4 +9,6 @@
     <color name="colorCurrencyInputColor">@color/colorAccent</color>
     <color name="colorCurrencyInputHint">@color/colorWhite40</color>
     <color name="colorCurrencyInputUnderline">@color/colorWhite30</color>
+
+    <color name="swipeRefreshBackground">@color/colorAccent</color>
 </resources>

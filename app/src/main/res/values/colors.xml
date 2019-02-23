@@ -20,4 +20,9 @@
     <color name="colorNightDark">#212326</color>
 
     <color name="colorSnackbarAction">#ff80ab</color>
+
+    <color name="swipeRefreshBackground">#FFFFFF</color>
+    <color name="swipeRefreshProgressOne">#1AFE9D</color>
+    <color name="swipeRefreshProgressTwo">#7DFF61</color>
+    <color name="swipeRefreshProgressThree">#FDFF16</color>
 </resources>

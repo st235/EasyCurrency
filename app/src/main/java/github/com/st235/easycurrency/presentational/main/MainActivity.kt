@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import github.com.st235.easycurrency.R
 import github.com.st235.easycurrency.domain.Currency
 import github.com.st235.easycurrency.presentational.base.BaseActivity
@@ -38,10 +39,15 @@ class MainActivity : BaseActivity(), MainView {
         currenciesRecyclerView.scrollToPosition(0)
     }
 
+    private val swipeToRefreshListener = {
+        presenter.onSwipeToRefresh()
+    }
+
     private lateinit var keyboardHelper: KeyboardHelper
     private lateinit var snackBarHelper: SnackBarHelper
     private lateinit var currenciesProgressBar: ProgressBar
     private lateinit var currenciesRecyclerView: RecyclerView
+    private lateinit var currenciesSwipeRefreshLayout: SwipeRefreshLayout
 
     override fun getLayout() = R.layout.activity_main
 
@@ -50,6 +56,17 @@ class MainActivity : BaseActivity(), MainView {
         snackBarHelper = SnackBarHelper(this, snackBarFactory)
         currenciesRecyclerView = findViewById(R.id.currenciesList)
         currenciesProgressBar = findViewById(R.id.currenciesProgressBar)
+        currenciesSwipeRefreshLayout = findViewById(R.id.currenciesSwipeContainer)
+
+        currenciesSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(
+                R.color.swipeRefreshBackground
+        )
+        currenciesSwipeRefreshLayout.setColorSchemeResources(
+                R.color.swipeRefreshProgressOne,
+                R.color.swipeRefreshProgressTwo,
+                R.color.swipeRefreshProgressThree
+        )
+        currenciesSwipeRefreshLayout.setOnRefreshListener(swipeToRefreshListener)
 
         adapter.itemClickListener = onItemClickListener
         adapter.onScrollToTopListener = onScrollToTopListener
@@ -74,6 +91,11 @@ class MainActivity : BaseActivity(), MainView {
         if (currenciesProgressBar.isShown) {
             currenciesProgressBar.visibility = View.GONE
         }
+
+        if (currenciesSwipeRefreshLayout.isRefreshing) {
+            currenciesSwipeRefreshLayout.isRefreshing = false
+        }
+
         adapter.onCurrenciesUpdated(currencies)
     }
 

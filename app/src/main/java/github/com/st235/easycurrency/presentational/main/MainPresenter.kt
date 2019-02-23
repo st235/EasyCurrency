@@ -8,7 +8,8 @@ import github.com.st235.easycurrency.utils.CurrencyUtils
 import github.com.st235.easycurrency.utils.Observer
 import github.com.st235.easycurrency.utils.TimeUtils
 
-class MainPresenter(private val currenciesHolder: CurrencyListHolder): BasePresenter<MainView>() {
+class
+MainPresenter(private val currenciesHolder: CurrencyListHolder): BasePresenter<MainView>() {
 
     private val currenciesChangeObserver: Observer<CurrenciesList>
             = { currencies: CurrenciesList ->
@@ -28,6 +29,10 @@ class MainPresenter(private val currenciesHolder: CurrencyListHolder): BasePrese
 
     fun onClickCurrency(newBaseCurrency: Currency) {
         currenciesHolder.onChangeBaseCurrency(newBaseCurrency)
+    }
+
+    fun onSwipeToRefresh() {
+        currenciesHolder.updateCurrencies()
     }
 
     override fun onDetachView(v: MainView?) {

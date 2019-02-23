@@ -38,6 +38,9 @@ abstract class CurrencyListHolder: ObservableModel<CurrenciesList>() {
      */
     abstract fun onTypedNewValue(newBaseValue: Double)
 
+    open fun updateCurrencies() {
+    }
+
     protected fun getCurrencies(time: Long): CurrenciesList {
         return time to currencies.map { i -> i }
     }

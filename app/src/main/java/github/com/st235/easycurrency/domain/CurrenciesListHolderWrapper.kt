@@ -45,6 +45,10 @@ class CurrenciesListHolderWrapper(private val currencyRateRepository: CurrencyRa
         currencyRateRepository.removeObserver(updateCurrenciesObserver)
     }
 
+    override fun updateCurrencies() {
+        currencyRateRepository.update()
+    }
+
     override fun onUpdateCurrencies(response: CurrencyRateResponse) {
         Timber.tag(TAG).v("Update currencies ${response.unixTimestamp}")
         currentListHolder.onUpdateCurrencies(response)
